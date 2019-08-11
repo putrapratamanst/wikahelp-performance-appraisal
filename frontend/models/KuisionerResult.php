@@ -1,0 +1,56 @@
+<?php
+
+namespace frontend\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "kuisioner_result".
+ *
+ * @property int $id
+ * @property string $id_kuisioner
+ * @property string $result
+ * @property string $id_tiket
+ */
+class KuisionerResult extends \yii\db\ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+
+    public $tempKuisioner;
+
+    public static function tableName()
+    {
+        return 'kuisioner_result';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['id_kuisioner', 'result', 'id_tiket', 'tempKuisioner'], 'string', 'max' => 45],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'id_kuisioner' => 'Id Kuisioner',
+            'result' => 'Result',
+            'id_tiket' => 'Id Tiket',
+        ];
+    }
+
+    public function getKuisioner()
+    {
+        return $this->hasOne(Kuisioner::className(), ['id' => 'id_kuisioner']);
+    }
+
+}
