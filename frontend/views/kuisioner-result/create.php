@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\KuisionerResult */
 
-$this->title = 'Create Kuisioner Result';
+$this->title = 'Kuisioner';
 $this->params['breadcrumbs'][] = ['label' => 'Kuisioner Results', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

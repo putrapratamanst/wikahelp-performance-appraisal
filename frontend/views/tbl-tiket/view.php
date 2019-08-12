@@ -91,6 +91,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'clientOptions' => [
                         // Your client options
                     ],
+            //          'callback' => '
+            // function(){
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "' . Yii::$app->urlManager->createUrl(['site/index']) . '",
+            //         data: "star_rating=" + $(this).val(),
+            //         success: function(data){
+            //             $("#mystar_voting").html(data);
+            //         }
+            //     })
+            // }'
                 ]);
             },
             'format' => 'raw'

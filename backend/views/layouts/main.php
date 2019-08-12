@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'WIKA BETON',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -70,7 +70,7 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">Arya Niken Manalu</p>
     </div>
 </footer>
 
