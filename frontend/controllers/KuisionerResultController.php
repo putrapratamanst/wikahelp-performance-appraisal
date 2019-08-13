@@ -53,10 +53,18 @@ class KuisionerResultController extends Controller
      */
     public function actionView($id_tiket)
     {
-        $kuisioner = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner.role' => 4])->all();
+        $kuisioner = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner.role' => 4])->all();
+        $kuisionerMansup = KuisionerResult::find()
+            ->joinWith(['kuisioner'])
+            ->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner_result.role' => 3])->all();
+
+            $kuisionerTechsup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner.role' => 2])->all();
 
         return $this->render('view', [
-            'kuisioner' => $kuisioner
+            'kuisioner' => $kuisioner,
+            'kuisionerMansup' => $kuisionerMansup,
+            'kuisionerTechsup' => $kuisionerTechsup,
+
         ]);
     }
 
@@ -65,6 +73,76 @@ class KuisionerResultController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    // public function actionCreate($id_tiket)
+    // {
+    //     $model = new KuisionerResult();
+    //     $kuisioner = Kuisioner::find()->where(['role' => 4])->all();
+
+    //     if ($model->load(Yii::$app->request->post())) {
+    //         $post = Yii::$app->request->post();
+
+
+    //         $count= count($post['KuisionerResult']);
+    //         $odd=array();
+    //         $even=array();
+    //         $modelTemp=array();
+    //         $countOdd=1;
+
+    //         foreach ($post['KuisionerResult']['tempKuisioner'] as $valueKuisioner) {
+    //             if ($countOdd % 2 == 1) {
+    //                 $odd[] = $valueKuisioner;
+    //             } else {
+    //                 $even[] = $valueKuisioner;
+    //             }
+
+    //             $countOdd++;
+    //         }
+
+    //         foreach ($even as $value) {
+
+    //             if ($value == "")
+    //             {
+    //                  Yii::$app->session->setFlash('danger', "Semua pertanyaan harus dijawab.");
+    //                 return $this->render('create', [
+    //                     'model' => $model,
+    //                     'kuisioner' => $kuisioner,
+    //                 ]);
+
+    //             }
+
+    //             foreach ($post['KuisionerResult']['id_kuisioner'] as  $valueIdKuisioner) {
+
+    //                 $modelAttribute = [
+    //                     'id_tiket' => $id_tiket,
+    //                     'result' => $value,
+    //                     'id_kuisioner' => $valueIdKuisioner,
+    //                     'role' => "4",
+    //                 ] ;
+
+    //                 // echo"<pre>";print_r($model);
+    //             }
+    //             array_push($modelTemp, $modelAttribute);
+    //         }
+
+    //         foreach ($modelTemp as $modelTempValue) :
+
+    //             $model = new KuisionerResult();
+    //             $model->setAttributes($modelTempValue);
+    //             $model->save();
+    //         // if (!$model->save()) {
+    //         //     return json_encode($model->errors);
+    //         // }
+    //         endforeach;
+
+    //         return $this->redirect(['view', 'id_tiket' => $id_tiket]);
+    //     }
+
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //         'kuisioner' => $kuisioner,
+    //     ]);
+    // }
+
     public function actionCreate($id_tiket)
     {
         $model = new KuisionerResult();
@@ -74,11 +152,10 @@ class KuisionerResultController extends Controller
             $post = Yii::$app->request->post();
 
 
-            $count= count($post['KuisionerResult']);
-            $odd=array();
-            $even=array();
-            $modelTemp=array();
-            $countOdd=1;
+            $count = count($post['KuisionerResult']);
+            $odd = array();
+            $even = array();
+            $countOdd = 1;
 
             foreach ($post['KuisionerResult']['tempKuisioner'] as $valueKuisioner) {
                 if ($countOdd % 2 == 1) {
@@ -89,39 +166,43 @@ class KuisionerResultController extends Controller
 
                 $countOdd++;
             }
-            
+
             foreach ($even as $value) {
 
-                if ($value == "")
-                {
-                     Yii::$app->session->setFlash('danger', "Semua pertanyaan harus dijawab.");
+                if ($value == "") {
+                    Yii::$app->session->setFlash('danger', "Semua pertanyaan harus dijawab.");
                     return $this->render('create', [
                         'model' => $model,
                         'kuisioner' => $kuisioner,
                     ]);
-
                 }
+                $modelTemp = array();
+                foreach ($post['KuisionerResult']['id_kuisioner'] as $valueIdKuisioner) {
 
-                foreach ($post['KuisionerResult']['id_kuisioner'] as  $valueIdKuisioner) {
-                    
                     $modelAttribute = [
                         'id_tiket' => $id_tiket,
                         'result' => $value,
-                        'id_kuisioner' => $valueIdKuisioner
-                    ] ;
+                        'id_kuisioner' => $valueIdKuisioner,
+                        'role' => "4",
+                    ];
 
-                    // echo"<pre>";print_r($model);
+                    array_push($modelTemp, $modelAttribute);
                 }
-                array_push($modelTemp, $modelAttribute);
             }
 
+            foreach ($modelTemp as $modelTempValue) :
 
-            // echo"<pre>";print_r($modelTemp);
-            // $model->save();
-            // die();
+                $model = new KuisionerResult();
+                $model->setAttributes($modelTempValue);
+                $model->save();
+            // if (!$model->save()) {
+            //     return json_encode($model->errors);
+            // }
+            endforeach;
 
 
-            return $this->redirect(['view', 'id' => $model->id]);
+
+            return $this->redirect(['view', 'id_tiket' => $id_tiket]);
         }
 
         return $this->render('create', [

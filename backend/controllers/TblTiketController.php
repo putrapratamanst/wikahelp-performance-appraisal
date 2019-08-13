@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use frontend\models\TblSubTiket;
 use yii\data\ActiveDataProvider;
 use backend\models\KuisionerResult;
+use common\helpers\Constant;
 
 /**
  * TblTiketController implements the CRUD actions for TblTiket model.
@@ -55,7 +56,7 @@ class TblTiketController extends Controller
      */
     public function actionView($id)
     {
-        $kuisioner = KuisionerResult::find()->where(['id_tiket' => $id, 'role' => 4])->all();
+        $kuisioner = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner.role' => 4])->where(['id_tiket' => $id])->all();
         $subTiket = TblSubTiket::find()->joinWith(['subKriteria', 'kriteria'])->where(['id_tiket' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $subTiket,
@@ -67,6 +68,7 @@ class TblTiketController extends Controller
             'kuisioner' => $kuisioner,
         ]);
     }
+
 
     /**
      * Creates a new TblTiket model.

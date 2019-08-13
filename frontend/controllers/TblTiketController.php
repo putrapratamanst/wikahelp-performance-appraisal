@@ -59,6 +59,15 @@ class TblTiketController extends Controller
     public function actionView($id)
     {
         $subTiket = TblSubTiket::find()->joinWith(['subKriteria','kriteria'])->where(['id_tiket' => $id]);
+        
+        $statusSubTiket = $subTiket->all();
+        $buttonClose = true;
+        foreach ($statusSubTiket as $value) {
+            if($value['status_sub_tiket'] != Constant::STATUS_DONE)
+            {
+                $buttonClose = false;
+            }
+        }
         $kuisioner = KuisionerResult::find()->where(['id_tiket' => $id, 'role' => 4])->all();
         $dataProvider = new ActiveDataProvider([
             'query' => $subTiket,
@@ -68,6 +77,7 @@ class TblTiketController extends Controller
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
             'kuisioner' => $kuisioner,
+            'buttonClose' => $buttonClose,
         ]);
     }
 
@@ -136,6 +146,43 @@ class TblTiketController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionDone($id_tiket)
+    {
+        $model = $this->findModel($id_tiket);
+        $model->status_tiket = Constant::STATUS_DONE;
+
+        $model->save();
+
+        Yii::$app->session->setFlash('success', "Tiket telah ditutup.");
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionAjukan($id_tiket)
+    {
+        $model = $this->findModel($id_tiket);
+        $model->status_tiket = Constant::STATUS_SUBMIT;
+
+        $model->save();
+
+        Yii::$app->session->setFlash('success', "Tiket telah diajukan.");
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionFormGrid()
+    {
+        $model = new TblSubTiket();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id_tiket]);
+        }
+
+        return $this->render('_form_grid', [
+            'model' => $model,
+        ]);
+    }
+
+
 
     public function actionStatusSubmit($id)
     {

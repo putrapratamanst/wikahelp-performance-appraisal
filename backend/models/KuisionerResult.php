@@ -18,6 +18,7 @@ class KuisionerResult extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $tempKuisioner;
     public static function tableName()
     {
         return 'kuisioner_result';
@@ -29,7 +30,8 @@ class KuisionerResult extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_kuisioner', 'result', 'id_tiket', 'role'], 'string', 'max' => 45],
+            [['result', 'id_tiket', 'role'], 'string', 'max' => 45],
+            [['id_kuisioner'], 'integer', 'max' => 45],
         ];
     }
 

@@ -12,13 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_kuisioner')->textInput(['maxlength' => true]) ?>
+    <?php
+    foreach ($kuisioner as $key => $valueKuisioner) {
 
-    <?= $form->field($model, 'result')->textInput(['maxlength' => true]) ?>
+        $a = new ArrayObject($model);
+        $b = $a->offsetSet("tempKuisioner" . $key, NULL);
 
-    <?= $form->field($model, 'id_tiket')->textInput(['maxlength' => true]) ?>
+        echo $form->field($model, 'id_kuisioner[]' . $key)->hiddenInput(['value' => $valueKuisioner['id']])->label(false);
+        echo $form->field($model, 'tempKuisioner[]' . $key)->radioList(['1' => 'Ya', '0' => 'Tidak'])->label($valueKuisioner['pertanyaan']);
+    }
 
-    <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

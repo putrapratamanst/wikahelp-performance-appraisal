@@ -47,8 +47,82 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h2>Hasil Kuisioner </h2>
     <p>
-        <?= Html::a('Kembali', Yii::$app->request->referrer, ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Kembali', ['tbl-tiket/view', 'id' => Yii::$app->getRequest()->getQueryParam('id_tiket')], ['class' => 'btn btn-primary']) ?>
     </p>
+
+
+    <?php
+    if (!empty($kuisionerMansup)) {
+        ?>
+    <center>
+        <h4>Manager</h4>
+    </center>
+    <table>
+        <tr>
+            <th>Pertanyaan</th>
+            <th>Ya</th>
+            <th>Tidak</th>
+        </tr>
+        <?php foreach ($kuisionerMansup as $valueKuisionerMansup) {
+                ?>
+        <tr>
+            <td><?= $valueKuisionerMansup['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
+                        if ($valueKuisionerMansup['result'] == 1) {
+                            echo "<span style='font-size:20px;'>&#10003;</span>";
+                        }
+                        ?>
+            </td>
+            <td> <?php if ($valueKuisionerMansup['result'] == 0) {
+                                echo "<span style='font-size:20px;'>&#10003;</span>";
+                            } ?>
+            </td>
+
+        </tr>
+        <?php } ?>
+
+    </table>
+    <br>
+    <?php } ?>
+
+    <?php
+    if (!empty($kuisionerTechsup)) {
+        ?>
+
+    <center>
+        <h4>Technical Support</h4>
+    </center>
+    <table>
+        <tr>
+            <th>Pertanyaan</th>
+            <th>Ya</th>
+            <th>Tidak</th>
+        </tr>
+        <?php foreach ($kuisionerTechsup as $valueKuisionerTechSup) {
+                ?>
+        <tr>
+            <td><?= $valueKuisionerTechSup['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
+                        if ($valueKuisionerTechSup['result'] == 1) {
+                            echo "<span style='font-size:20px;'>&#10003;</span>";
+                        }
+                        ?>
+            </td>
+            <td> <?php if ($valueKuisionerTechSup['result'] == 0) {
+                                echo "<span style='font-size:20px;'>&#10003;</span>";
+                            } ?>
+            </td>
+
+        </tr>
+        <?php } ?>
+
+    </table>
+    <br>
+    <?php } ?>
+    <?php if (!empty($kuisioner)) { ?>
+    <center>
+        <h4>User</h4>
+    </center>
 
     <table>
         <tr>
@@ -57,25 +131,27 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Tidak</th>
         </tr>
         <?php foreach ($kuisioner as $valueKuisioner) {
-            ?>
-            <tr>
-                <td><?= $valueKuisioner['kuisioner']['pertanyaan']; ?></td>
-                <td><?php
-                    if ($valueKuisioner['result'] == 1) {
-                        echo "<span style='font-size:20px;'>&#10003;</span>";
-                    }
-                    ?>
-                </td>
-                <td> <?php if ($valueKuisioner['result'] == 0)
-                    {
-                    echo "<span style='font-size:20px;'>&#10003;</span>";
-                    }?>
-                </td>
+                ?>
+        <tr>
+            <td><?= $valueKuisioner['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
+                        if ($valueKuisioner['result'] == 1) {
+                            echo "<span style='font-size:20px;'>&#10003;</span>";
+                        }
+                        ?>
+            </td>
+            <td> <?php if ($valueKuisioner['result'] == 0) {
+                                echo "<span style='font-size:20px;'>&#10003;</span>";
+                            } ?>
+            </td>
 
-            </tr>
-        <?php } ?>
+        </tr>
+        <?php }
+        } ?>
 
     </table>
+
+
 
 </body>
 

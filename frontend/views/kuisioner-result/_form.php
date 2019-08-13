@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="kuisioner-result-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    
     <?php
     foreach ($kuisioner as $key => $valueKuisioner) 
     {        

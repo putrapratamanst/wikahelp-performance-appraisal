@@ -20,14 +20,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
 
         <?php
+        echo Html::a('Kembali', ['index'], ['class' => 'btn btn-default']);
+    echo "\n\n";
+
+    if($buttonClose == true && $model->status_tiket == Constant::STATUS_SUBMIT)
+    {
+        echo Html::a('Tutup Tiket', ['done', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-danger']); 
+        echo "\n\n";
+    }
         if ($model->status_tiket == Constant::STATUS_DONE)
         {
-            echo Html::a('Tutup', ['kuisioner-result/create', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']); 
             
             if ($kuisioner)
             {
-                echo Html::a('Lihat Kuisioner', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-default']);
-            }        
+                echo Html::a('Lihat Kuisioner', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
+            }   else {
+                echo Html::a('Isi Kuisioner', ['kuisioner-result/create', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
+            }     
+        }
+
+        if ($model->status_tiket == Constant::STATUS_PROCESS)
+        {   
+            echo Html::a('Ajukan Tiket', ['ajukan', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-warning']);
         }
 
         ?>
@@ -49,15 +63,15 @@ $this->params['breadcrumbs'][] = $this->title;
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => false,
-    'rowOptions' => function ($model) {
-        $datetime1 = date_create($model->created_date);
-        $datetime2 = new DateTime('NOW');
-        $interval = date_diff($datetime1, $datetime2);
-        // echo"<pre>";print_r($);exit();
-        if ($interval->d >= 2 && $model->status_sub_tiket == Constant::STATUS_PROCESS) {
-            return ['class' => 'danger'];
-        }
-    },
+        'rowOptions' => function ($model) {
+            $datetime1 = date_create($model->created_date);
+            $datetime2 = new DateTime('NOW');
+            $interval = date_diff($datetime1, $datetime2);
+            // echo"<pre>";print_r($);exit();
+            if ($interval->d >= 2 && $model->status_sub_tiket == Constant::STATUS_PROCESS) {
+                return ['class' => 'danger'];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -66,19 +80,24 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_date',
                 'label'     => 'Tanggal Pengerjaan',
+                // 'content' => function($model, $key, $index, $column) {
+                //          echo $this->render('_form_grid', ['model'+>]);
+                // },
                 
             ],
         [
             'attribute' => 'notif_man',
             'label' => 'Status',
             'value' => function ($model) {
-                if ($model->notif_man) {
+                if (!empty($model->notif_man) == Constant::NOTIF_EMAIL && $model->status_sub_tiket != Constant::STATUS_DONE)
+                {
                     return "Proses  Notif Manager : Segera di Selesaikan";
                 } else {
                     return $model->status_sub_tiket;
                 }
             }
         ],
+        
             
         [
             'attribute' => 'notif_man',
@@ -91,6 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'clientOptions' => [
                         // Your client options
                     ],
+                    
             //          'callback' => '
             // function(){
             //     $.ajax({

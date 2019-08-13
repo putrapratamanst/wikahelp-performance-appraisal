@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\KuisionerResult;
 use backend\models\KuisionerResultSearch;
+use frontend\models\Kuisioner;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,6 +37,7 @@ class KuisionerResultController extends Controller
     public function actionIndex()
     {
         $searchModel = new KuisionerResultSearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,10 +54,15 @@ class KuisionerResultController extends Controller
      */
     public function actionView($id_tiket)
     {
-        $kuisioner = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner.role' => 4])->all();
+        $kuisioner = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner.role' => 4])->all();
+        $kuisionerMansup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner.role' => 3])->all();
+        $kuisionerTechsup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id_tiket])->andWhere(['kuisioner.role' => 2])->all();
 
         return $this->render('view', [
-            'kuisioner' => $kuisioner
+            'kuisionerMansup' => $kuisionerMansup,
+            'kuisionerTechsup' => $kuisionerTechsup,
+            'kuisioner' => $kuisioner,
+            'id_tiket' => $id_tiket,
         ]);
     }
 
@@ -64,19 +71,141 @@ class KuisionerResultController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_tiket)
     {
         $model = new KuisionerResult();
+        $kuisioner = Kuisioner::find()->where(['role' => 2])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $post = Yii::$app->request->post();
+
+
+            $count = count($post['KuisionerResult']);
+            $odd = array();
+            $even = array();
+            $countOdd = 1;
+
+            foreach ($post['KuisionerResult']['tempKuisioner'] as $valueKuisioner) {
+                if ($countOdd % 2 == 1) {
+                    $odd[] = $valueKuisioner;
+                } else {
+                    $even[] = $valueKuisioner;
+                }
+
+                $countOdd++;
+            }
+
+            foreach ($even as $value) {
+
+                if ($value == "") {
+                    Yii::$app->session->setFlash('danger', "Semua pertanyaan harus dijawab.");
+                    return $this->render('create', [
+                        'model' => $model,
+                        'kuisioner' => $kuisioner,
+                    ]);
+                }
+                $modelTemp = array();
+                foreach ($post['KuisionerResult']['id_kuisioner'] as $valueIdKuisioner) {
+
+                    $modelAttribute = [
+                        'id_tiket' => $id_tiket,
+                        'result' => $value,
+                        'id_kuisioner' => $valueIdKuisioner,
+                        'role' => "2",
+                    ];
+
+                    array_push($modelTemp, $modelAttribute);
+                }
+            }
+
+            foreach ($modelTemp as $modelTempValue) :
+                
+                $model = new KuisionerResult();
+                $model->setAttributes($modelTempValue);
+                $model->save();
+            // if (!$model->save()) {
+            //     return json_encode($model->errors);
+            // }
+            endforeach;
+
+
+
+            return $this->redirect(['view', 'id_tiket' => $id_tiket]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'kuisioner' => $kuisioner,
         ]);
     }
 
+    public function actionCreateManager($id_tiket)
+    {
+        $model = new KuisionerResult();
+        $kuisioner = Kuisioner::find()->where(['role' => 3])->all();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $post = Yii::$app->request->post();
+
+
+            $count = count($post['KuisionerResult']);
+            $odd = array();
+            $even = array();
+            $countOdd = 1;
+
+            foreach ($post['KuisionerResult']['tempKuisioner'] as $valueKuisioner) {
+                if ($countOdd % 2 == 1) {
+                    $odd[] = $valueKuisioner;
+                } else {
+                    $even[] = $valueKuisioner;
+                }
+
+                $countOdd++;
+            }
+
+            foreach ($even as $value) {
+
+                if ($value == "") {
+                    Yii::$app->session->setFlash('danger', "Semua pertanyaan harus dijawab.");
+                    return $this->render('create', [
+                        'model' => $model,
+                        'kuisioner' => $kuisioner,
+                    ]);
+                }
+                $modelTemp = array();
+                foreach ($post['KuisionerResult']['id_kuisioner'] as $valueIdKuisioner) {
+
+                    $modelAttribute = [
+                        'id_tiket' => $id_tiket,
+                        'result' => $value,
+                        'id_kuisioner' => $valueIdKuisioner,
+                        'role' => "3",
+                    ];
+
+                    array_push($modelTemp, $modelAttribute);
+                }
+            }
+
+            foreach ($modelTemp as $modelTempValue) :
+                
+                $model = new KuisionerResult();
+                $model->setAttributes($modelTempValue);
+                $model->save();
+            // if (!$model->save()) {
+            //     return json_encode($model->errors);
+            // }
+            endforeach;
+
+
+
+            return $this->redirect(['view', 'id_tiket' => $id_tiket]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'kuisioner' => $kuisioner,
+        ]);
+    }
     /**
      * Updates an existing KuisionerResult model.
      * If update is successful, the browser will be redirected to the 'view' page.

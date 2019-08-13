@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\User;
 use backend\models\TblAlternatif;
+use backend\models\TblSubKriteria;
 use common\helpers\Constant;
 
 /**
@@ -98,7 +99,7 @@ class TblSubTiketController extends Controller
         ]);
     }
 
-    public function actionEmail($id_sub_tiket)
+    public function actionEmail($id_sub_tiket, $id_tiket)
     {
         $model = $this->findModel($id_sub_tiket);
         $model->notif_man = "Segera di Selesaikan";
@@ -107,7 +108,9 @@ class TblSubTiketController extends Controller
         $userData = User::find()->where(['username'=> $dataAlternatif['username']])->one();
         $model->save();
 
-        Yii::$app->mailer->compose()
+        $idSubKriteria = TblSubKriteria::find()->where(['id_sub_kriteria' => $model->id_sub_kriteria])->one();
+
+        Yii::$app->mailer->compose('@app/web/uploads/email', ['content' => $userData, 'sub_tiket' => $idSubKriteria, 'id_tiket' => $id_tiket])
             ->setFrom('putrapratamanst@gmail.com')
             ->setTo($userData['email'])
             ->setSubject('Pengingat Tiket')
@@ -116,7 +119,7 @@ class TblSubTiketController extends Controller
             ->send();
 
             Yii::$app->session->setFlash('success', "Email notifikasi telah terkirim.");
-        return $this->goBack(Yii::$app->request->referrer);
+        return $this->redirect(Yii::$app->request->referrer);
 
     }
 
@@ -127,8 +130,8 @@ class TblSubTiketController extends Controller
         
         $model->save();
 
-        Yii::$app->session->setFlash('success', "Data telah tersimpan.");
-        return $this->goBack(Yii::$app->request->referrer);
+        Yii::$app->session->setFlash('success', "Pengerjaan telah selesai.");
+        return $this->redirect(Yii::$app->request->referrer);
 
     }
 

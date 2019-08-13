@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'yii\grid\ActionColumn',
             'buttons' => [
                 'view' => function ($url, $model, $key) {
-                    if ($model->status_tiket == Constant::STATUS_DONE) {
+                        if ($model->status_tiket !== Constant::STATUS_PROCESS) {
                         return Html::a(
                             '<span class="glyphicon glyphicon-eye-open"></span>',
                             ['tbl-tiket/view', 'id' => $model->id_tiket]

@@ -28,7 +28,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'pertanyaan:ntext',
-            // 'role',
+            [
+                'attribute' => 'role',
+                'value' => function($model)
+                {
+                    if ($model->role == 4)
+                    {
+                        return "User";
+                    }
+                    if ($model->role == 3)
+                    {
+                        return "Manager Support";
+                    }
+                    if ($model->role == 2)
+                    {
+                        return "Technical Support";
+                    }
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

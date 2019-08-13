@@ -43,14 +43,96 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <body>
 
-    <h2>Hasil Kuisioner  </h2>
+    <h2>Hasil Kuisioner </h2>
     <p>
-        <?= Html::a('Kembali', Yii::$app->request->referrer, ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Isi Kuisioner', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Kembali', ['tbl-tiket/view','id' => Yii::$app->getRequest()->getQueryParam('id_tiket') ], ['class' => 'btn btn-primary']) ?>
+        <?php
+        if (Yii::$app->user->identity->username == 'techsup') 
+        {
+            if (empty($kuisionerTechsup))
+            {
+                echo Html::a('Isi Kuisioner Technical Support', ['kuisioner-result/create', 'id_tiket'=> $id_tiket]  , ['class' => 'btn btn-success']);
+            }
+        }
+        if (Yii::$app->user->identity->username == 'mansup') 
+        {
+            if (empty($kuisionerMansup))
+            {
+                echo Html::a('Isi Kuisioner Manager Support', ['kuisioner-result/create-manager', 'id_tiket'=> $id_tiket]  , ['class' => 'btn btn-success']); 
+            }
+        }
+        ?>
+
     </p>
 
+    
+    <?php 
+        if(!empty($kuisionerMansup)){
+    ?>
+    <center><h4>Manager</h4></center>
+    <table>
+        <tr>
+            <th>Pertanyaan</th>
+            <th>Ya</th>
+            <th>Tidak</th>
+        </tr>
+        <?php foreach ($kuisionerMansup as $valueKuisionerMansup) {
+            ?>
+        <tr>
+            <td><?= $valueKuisionerMansup['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
+                    if ($valueKuisionerMansup['result'] == 1) {
+                        echo "<span style='font-size:20px;'>&#10003;</span>";
+                    }
+                    ?>
+            </td>
+            <td> <?php if ($valueKuisionerMansup['result'] == 0) {
+                            echo "<span style='font-size:20px;'>&#10003;</span>";
+                        } ?>
+            </td>
+
+        </tr>
+        <?php } ?>
+
+    </table>
     <br>
-    <h4>User</h4>
+                    <?php } ?>
+
+    <?php 
+        if(!empty($kuisionerTechsup)){
+    ?>
+
+    <center><h4>Technical Support</h4></center>
+    <table>
+        <tr>
+            <th>Pertanyaan</th>
+            <th>Ya</th>
+            <th>Tidak</th>
+        </tr>
+        <?php foreach ($kuisionerTechsup as $valueKuisionerTechSup) {
+            ?>
+        <tr>
+            <td><?= $valueKuisionerTechSup['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
+                    if ($valueKuisionerTechSup['result'] == 1) {
+                        echo "<span style='font-size:20px;'>&#10003;</span>";
+                    }
+                    ?>
+            </td>
+            <td> <?php if ($valueKuisionerTechSup['result'] == 0) {
+                            echo "<span style='font-size:20px;'>&#10003;</span>";
+                        } ?>
+            </td>
+
+        </tr>
+        <?php } ?>
+
+    </table>
+    <br>
+    <?php } ?>
+
+    <?php if(!empty($kuisioner)){ ?>
+    <center><h4>User</h4></center>
     <table>
         <tr>
             <th>Pertanyaan</th>
@@ -59,23 +141,24 @@ $this->params['breadcrumbs'][] = $this->title;
         </tr>
         <?php foreach ($kuisioner as $valueKuisioner) {
             ?>
-            <tr>
-                <td><?= $valueKuisioner['kuisioner']['pertanyaan']; ?></td>
-                <td><?php
+        <tr>
+            <td><?= $valueKuisioner['kuisioner']['pertanyaan']; ?></td>
+            <td><?php
                     if ($valueKuisioner['result'] == 1) {
                         echo "<span style='font-size:20px;'>&#10003;</span>";
                     }
                     ?>
-                </td>
-                <td> <?php if ($valueKuisioner['result'] == 0) {
+            </td>
+            <td> <?php if ($valueKuisioner['result'] == 0) {
                             echo "<span style='font-size:20px;'>&#10003;</span>";
                         } ?>
-                </td>
+            </td>
 
-            </tr>
+        </tr>
         <?php } ?>
 
     </table>
+    <?php } ?>
 
 </body>
 

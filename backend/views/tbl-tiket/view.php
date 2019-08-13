@@ -20,10 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php
-        if ($model->status_tiket == Constant::STATUS_DONE) {
+    $idTiket = Yii::$app->getRequest()->getQueryParam('id');
 
+        echo Html::a('Kembali', ['index'], ['class' => 'btn btn-default']);
+        echo "\n\n";
+
+
+        if ($model->status_tiket == Constant::STATUS_DONE) {
             if ($kuisioner) {
-                echo Html::a('Lihat Kuisioner User', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-default']);
+                echo Html::a('Lihat Kuisioner User', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-success']);
+                echo "\n\n";
+
             }
         }
 
@@ -62,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label' => 'Status',
                     'value' => function($model) 
                     {
-                        if ($model->notif_man)
+                    if (!empty($model->notif_man) == Constant::NOTIF_EMAIL && $model->status_sub_tiket != Constant::STATUS_DONE)
                         {
                             return "Proses  Notif Manager : Segera di Selesaikan";
                         } else {
@@ -73,11 +80,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'email' => function ($url, $model, $key) {
+                    'email' => function ($url, $model, $key) use ($idTiket) {
                         if ($model->status_sub_tiket == Constant::STATUS_PROCESS) {
                             return Html::a(
                                 '<span class="glyphicon glyphicon-envelope"></span>',
-                                ['/tbl-sub-tiket/email', 'id_sub_tiket' => $model->id_sub_tiket],
+                                ['/tbl-sub-tiket/email', 'id_sub_tiket' => $model->id_sub_tiket, 'id_tiket' => $idTiket],
                                 [
                                     'class' => 'btn btn-danger',
                                     'data' => [
@@ -116,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label' => 'Status',
                     'value' => function($model) 
                     {
-                        if ($model->notif_man)
+                        if (!empty($model->notif_man) == Constant::NOTIF_EMAIL && $model->status_sub_tiket != Constant::STATUS_DONE)
                         {
                             return "Proses  Notif Manager : Segera di Selesaikan";
                         } else {
@@ -151,19 +158,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]);
     }
-echo \yii2mod\rating\StarRating::widget([
-    'name' => 'input_name',
-    'value' => 1,
-    'clientOptions' => [
-        // Your client options
-    ],
-]);
+// echo \yii2mod\rating\StarRating::widget([
+//     'name' => 'input_name',
+//     'value' => 1,
+//     'clientOptions' => [
+//         // Your client options
+//     ],
+// ]);
 
-    // With model & without ActiveForm
-    echo StarRating::widget([
-        'name' => 'rating_1',
-        'pluginOptions' => [ 'showClear' => false]
-    ]);
+//     // With model & without ActiveForm
+//     echo StarRating::widget([
+//         'name' => 'rating_1',
+//         'pluginOptions' => [ 'showClear' => false]
+//     ]);
     ?>
 
 </div>
