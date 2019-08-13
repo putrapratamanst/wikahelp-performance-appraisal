@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\helpers\Constant;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -14,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\models\KuisionerResult;
+use frontend\models\TblTiket;
 
 /**
  * Site controller
@@ -74,6 +77,91 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $name = Yii::$app->user->identity->username;
+        $tiket = TblTiket::find()->joinWith(['alternatif.user', 'subTiket'])->where(
+            [
+                'user.username' => $name, 
+                'user.role' => 4,
+                'tbl_tiket.status_tiket' => Constant::STATUS_DONE
+            ])->all();
+
+            $sumRating = 0;
+            $dataWithoutNol = [];
+
+            if ($tiket) {
+                foreach ($tiket as $valueTiket) {
+                    if ($valueTiket->subTiket)
+                    {
+                        foreach ($valueTiket->subTiket as $valueSubTiket) 
+                        {
+                            if (!empty($valueSubTiket->rating)) {
+                                $sumRating += $valueSubTiket->rating;
+                            }
+                            if ($valueSubTiket->rating != 0) {
+                                $dataWithoutNol[] = $valueSubTiket->rating;
+                            }
+                        }
+
+                        $countRating = empty($dataWithoutNol) ? 0 : count($dataWithoutNol);
+                        $bobotRating = empty($dataWithoutNol) ? 0 : array_sum($dataWithoutNol);
+        
+                        $hasilBobotRating = empty($dataWithoutNol) ? 0 : ($bobotRating / $countRating);
+        
+        
+                        $kuisionerUser = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 4])->all();
+
+                        $countKuisionerUser = [];
+                        $jumlahKuisionerUser = 0;
+                        foreach ($kuisionerUser as $valueKuisionerUser) {
+                            $jumlahKuisionerUser += $valueKuisionerUser->result;
+                        }
+                        $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
+                        $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
+
+        
+                        $kuisionerMansup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 3])->all();
+                        $countKuisionerMansup = [];
+                        $jumlahKuisionerMansup = 0;
+                        foreach ($kuisionerMansup as $valueKuisionerMansup) {
+                            $jumlahKuisionerMansup += $valueKuisionerMansup->result;
+                        }
+                        $perkalianKuisionerMansup = 10 * $jumlahKuisionerMansup;
+                        $bobotMansup = $hasilBobotRating * ($perkalianKuisionerMansup / 100);
+        
+        
+                        $kuisionerTechsup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 2])->all();
+                        $countKuisionerTechsup = [];
+                        $jumlahKuisionerTechsup = 0;
+                        foreach ($kuisionerTechsup as $valueKuisionerTechsup) {
+                            $jumlahKuisionerTechsup += $valueKuisionerTechsup->result;
+                        }
+                        $perkalianKuisionerTechsup = 10 * $jumlahKuisionerTechsup;
+                        $bobotTechsup = $hasilBobotRating * ($perkalianKuisionerTechsup / 100);
+        
+                        $akhir = $bobotUser + $bobotMansup + $bobotTechsup;
+
+                        if ($akhir >= 5) {
+                            $peringkat = "Sangat Baik";
+                        }
+                        if ($akhir < 4.99 && $akhir >= 4) {
+                            $peringkat = "Baik";
+                        }
+                        if ($akhir <= 3.99 && $akhir >= 3) {
+                            $peringkat = "Cukup Baik";
+                        }
+                        if ($akhir <= 2.99 && $akhir >= 2) {
+                            $peringkat = "Kurang Baik";
+                        }
+                        if ($akhir < 2) {
+                            $peringkat = "Sangat Kurang Baik";
+                        }
+        
+                        if (empty($dataWithoutNol)) {
+                            $peringkat = "";
+                        }
+                    }
+                }
+            }
         return $this->render('index');
     }
 

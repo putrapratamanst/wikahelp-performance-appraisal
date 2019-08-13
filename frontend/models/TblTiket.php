@@ -70,6 +70,11 @@ class TblTiket extends \yii\db\ActiveRecord
         return $this->hasOne(TblAlternatif::className(), ['id_alternatif' => 'id_alternatif']);
     }
 
+    public function getSubTiket()
+    {
+        return $this->hasMany(TblSubTiket::className(), ['id_tiket' => 'id_tiket']);
+    }
+
 
     public function getKriteria($idKriteria)
     {

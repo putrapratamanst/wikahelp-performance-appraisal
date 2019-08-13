@@ -32,7 +32,7 @@ class TblSubTiket extends \yii\db\ActiveRecord
     {
         return [
             [['id_tiket', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'required'],
-            [['id_tiket', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria', 'status_sub_tiket', 'notif_man','created_date'], 'string', 'max' => 100],
+            [['id_tiket', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria', 'status_sub_tiket', 'notif_man','created_date','rating'], 'string', 'max' => 100],
         ];
     }
 

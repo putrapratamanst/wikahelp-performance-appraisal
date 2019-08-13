@@ -64,7 +64,8 @@ class TblTiketSearch extends TblTiket
         $query->andFilterWhere(['like', 'id_tiket', $this->id_tiket])
             ->andFilterWhere(['like', 'id_alternatif', $this->id_alternatif])
             ->andFilterWhere(['like', 'wkt_tiket', $this->wkt_tiket])
-            ->andFilterWhere(['like', 'status_tiket', $this->status_tiket]);
+            ->andFilterWhere(['like', 'status_tiket', $this->status_tiket])
+            ->orderBy(['id_tiket' => SORT_DESC]);
 
         return $dataProvider;
     }

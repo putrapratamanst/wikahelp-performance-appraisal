@@ -11,7 +11,7 @@ $this->title = 'WIKA HELP';
 
     <div style="text-align:center">
         <marquee><h1>Selamat datang <?= Yii::$app->user->identity->username; ?> !</h1></marquee>
-        <p><a class="btn btn-lg btn-success" href="/tbl-tiket/create">Tambah Ticket</a></p>
+        <p><a class="btn btn-lg btn-warning" href="/tbl-tiket/create">Tambah Ticket</a></p>
     </div>
 
     <div class="body-content">
@@ -38,7 +38,14 @@ $this->title = 'WIKA HELP';
                             'text' => 'Index Performance'
                         ],
                         'xAxis' => [
-                            'categories' => $idTiket
+                            'categories' => [
+                                'Sangat Kurang Baik', 
+                                'Kurang Baik', 
+                                'Cukup Baik', 
+                                'Baik', 
+                                'Sangat Baik', 
+
+                            ]
                         ],
                         'yAxis' => [
                             'title' => [
@@ -46,11 +53,9 @@ $this->title = 'WIKA HELP';
                             ]
                         ],
                         'series' => [
-                            ['name' => 'Sangat Kurang Baik', 'data' => [0, 0]],
-                            ['name' => 'Kurang Baik', 'data' => [2.40, 0]],
-                            ['name' => 'Cukup Baik', 'data' => [0, 0]],
-                            ['name' => 'Baik', 'data' => [0, 0]],
-                            ['name' => 'Sangat Baik', 'data' => [0, 5]],
+                            ['name' => 'TK-0021', 'data' => [1]],
+                            ['name' => 'TK-0022', 'data' => [1]],
+                            ['name' => 'TK-0024', 'data' => [0,5]],
                         ]
                     ]
                 ]); ?>
@@ -58,15 +63,15 @@ $this->title = 'WIKA HELP';
             <div class="col-lg-4">
                 <h2>Status Tiket</h2>
                 <?php
-                $selesai = $tiket->where(['status_tiket' => Constant::STATUS_DONE])->count();
-                $proses = $tiket->where(['status_tiket' => Constant::STATUS_PROCESS])->count();
-                $submit = $tiket->where(['status_tiket' => Constant::STATUS_SUBMIT])->count();
+                $selesai = $tiket->andWhere(['status_tiket' => Constant::STATUS_DONE])->count();
+                $proses = $tiket->andWhere(['status_tiket' => Constant::STATUS_PROCESS])->count();
+                $submit = $tiket->andWhere(['status_tiket' => Constant::STATUS_SUBMIT])->count();
                 ?>
                 <p>
 
-                    <p><a class="btn btn-default">Tiket Selesai : <?= $selesai; ?></a></p>
-                    <p><a class="btn btn-default">Tiket Diterima : <?= $submit; ?></a></p>
-                    <p><a class="btn btn-default">Tiket Diterima : <?= $proses; ?></a></p>
+                    <p><a class="btn btn-primary">Tiket Selesai : <?= $selesai; ?></a></p>
+                    <p><a class="btn btn-success">Tiket Diterima : <?= $submit; ?></a></p>
+                    <p><a class="btn btn-danger">Tiket Diproses : <?= $proses; ?></a></p>
             </div>
         </div>
 

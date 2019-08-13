@@ -54,4 +54,9 @@ class KuisionerResult extends \yii\db\ActiveRecord
         return $this->hasOne(Kuisioner::className(), ['id' => 'id_kuisioner']);
     }
 
+    public function getTiket()
+    {
+        return $this->hasOne(TblTiket::className(), ['id_tiket' => 'id_tiket']);
+    }
+
 }

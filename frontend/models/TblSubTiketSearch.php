@@ -1,17 +1,15 @@
 <?php
 
-namespace backend\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\TblTiket;
-use common\helpers\Constant;
-use Yii;
+use frontend\models\TblSubTiket;
 
 /**
- * TblTiketSearch represents the model behind the search form of `backend\models\TblTiket`.
+ * TblSubTiketSearch represents the model behind the search form of `frontend\models\TblSubTiket`.
  */
-class TblTiketSearch extends TblTiket
+class TblSubTiketSearch extends TblSubTiket
 {
     /**
      * {@inheritdoc}
@@ -19,7 +17,8 @@ class TblTiketSearch extends TblTiket
     public function rules()
     {
         return [
-            [['id_tiket', 'id_alternatif', 'wkt_tiket', 'tgl_tiket', 'status_tiket'], 'safe'],
+            [['id_sub_tiket'], 'integer'],
+            [['id_tiket', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria', 'status_sub_tiket', 'notif_man', 'created_date', 'rating'], 'safe'],
         ];
     }
 
@@ -40,14 +39,8 @@ class TblTiketSearch extends TblTiket
      * @return ActiveDataProvider
      */
     public function search($params)
-    {   
-        // $name = Yii::$app->user->identity->username;
-        // if ($name == "mansup")
-        // {
-        //     $query = TblTiket::find()->where(['status_tiket' => Constant::STATUS_DONE]);
-        // } else {
-            $query = TblTiket::find();
-        // }
+    {
+        $query = TblSubTiket::find();
 
         // add conditions that should always apply here
 
@@ -65,14 +58,17 @@ class TblTiketSearch extends TblTiket
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'tgl_tiket' => $this->tgl_tiket,
+            'id_sub_tiket' => $this->id_sub_tiket,
         ]);
 
         $query->andFilterWhere(['like', 'id_tiket', $this->id_tiket])
             ->andFilterWhere(['like', 'id_alternatif', $this->id_alternatif])
-            ->andFilterWhere(['like', 'wkt_tiket', $this->wkt_tiket])
-            ->andFilterWhere(['like', 'status_tiket', $this->status_tiket])
-            ->orderBy(['id_tiket' => SORT_DESC]);
+            ->andFilterWhere(['like', 'id_kriteria', $this->id_kriteria])
+            ->andFilterWhere(['like', 'id_sub_kriteria', $this->id_sub_kriteria])
+            ->andFilterWhere(['like', 'status_sub_tiket', $this->status_sub_tiket])
+            ->andFilterWhere(['like', 'notif_man', $this->notif_man])
+            ->andFilterWhere(['like', 'created_date', $this->created_date])
+            ->andFilterWhere(['like', 'rating', $this->rating]);
 
         return $dataProvider;
     }

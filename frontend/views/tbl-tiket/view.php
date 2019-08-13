@@ -4,11 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use common\helpers\Constant;
+use kartik\rating\StarRating as KartikStarRating;
+use yii2mod\rating\StarRating;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\TblTiket */
 
-$this->title = "Data Tiket: ".$model->id_tiket;
+$this->title = "Data Tiket: " . $model->id_tiket;
 $this->params['breadcrumbs'][] = ['label' => 'Tbl Tikets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -21,35 +24,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php
         echo Html::a('Kembali', ['index'], ['class' => 'btn btn-default']);
-    echo "\n\n";
-
-    if($buttonClose == true && $model->status_tiket == Constant::STATUS_SUBMIT)
-    {
-        echo Html::a('Tutup Tiket', ['done', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-danger']); 
         echo "\n\n";
-    }
-        if ($model->status_tiket == Constant::STATUS_DONE)
-        {
-            if ($kuisioner)
-            {
+
+        if ($buttonClose == true && $model->status_tiket == Constant::STATUS_SUBMIT) {
+            echo Html::a('Tutup Tiket', ['done', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-danger']);
+            echo "\n\n";
+        }
+        if ($model->status_tiket == Constant::STATUS_DONE) {
+            if ($kuisioner) {
                 echo Html::a('Lihat Kuisioner', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
-            }   else {
+            } else {
                 echo Html::a('Isi Kuisioner', ['kuisioner-result/create', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
             }
-            ?>
-            <span class="pull-right" style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: red; font-size: 16px; line-height: 32px;">
-            Peringkat Keberhasilan:  <?= $peringkat; ?>  </span>
 
-<?php
+            if ($peringkat != "") { ?>
+        <span class="pull-right" style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: red; font-size: 16px; line-height: 32px;">
+            Peringkat Keberhasilan: <?= $peringkat; ?> </span>
+
+        <?php
+            }
         }
 
-        if ($model->status_tiket == Constant::STATUS_PROCESS)
-        {   
+        if ($model->status_tiket == Constant::STATUS_PROCESS) {
             echo Html::a('Ajukan Tiket', ['ajukan', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-warning']);
         }
 
         ?>
-       
+
     </p>
 
     <?= DetailView::widget([
@@ -61,9 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'tgl_tiket',
             'status_tiket',
         ],
-    ]); 
+    ]);
 
-    echo "<h3> Data Masalah </h3>";  
+    echo "<h3> Data Masalah </h3>";
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => false,
@@ -87,51 +88,106 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'content' => function($model, $key, $index, $column) {
                 //          echo $this->render('_form_grid', ['model'+>]);
                 // },
-                
+
             ],
-        [
-            'attribute' => 'notif_man',
-            'label' => 'Status',
-            'value' => function ($model) {
-                if (!empty($model->notif_man) == Constant::NOTIF_EMAIL && $model->status_sub_tiket != Constant::STATUS_DONE)
-                {
-                    return "Proses  Notif Manager : Segera di Selesaikan";
-                } else {
-                    return $model->status_sub_tiket;
+            [
+                'attribute' => 'notif_man',
+                'label' => 'Status',
+                'value' => function ($model) {
+                    if (!empty($model->notif_man) == Constant::NOTIF_EMAIL && $model->status_sub_tiket != Constant::STATUS_DONE) {
+                        return "Proses  Notif Manager : Segera di Selesaikan";
+                    } else {
+                        return $model->status_sub_tiket;
+                    }
                 }
-            }
+            ],
+
+
+            [
+                'attribute' => 'rating',
+                'value' => function ($model) {
+
+                    return
+                        StarRating::widget([
+                            'name' => 'rating',
+                            'value' => $model->rating,
+                            'clientOptions' => ['disabled' => false, 'showClear' => false]
+                        ]);
+                    //          'callback' => '
+                    // function(){
+                    //     $.ajax({
+                    //         type: "POST",
+                    //         url: "' . Yii::$app->urlManager->createUrl(['site/index']) . '",
+                    //         data: "star_rating=" + $(this).val(),
+                    //         success: function(data){
+                    //             $("#mystar_voting").html(data);
+                    //         }
+                    //     })
+                    // }'
+                    // ]);
+                },
+                'format' => 'raw'
+            ],
+
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<span>Input Rating</span>',
+                            ['tbl-sub-tiket/rating', 'id' => $model->id_tiket]
+                        );
+                    },
+                'rating' => function ($url, $model) {
+                    $id = $model->id_sub_tiket;
+                    return
+
+                        // StarRating::widget([
+                        //     'name' => 'rating',
+                        //     'value' => $model->rating,
+                        //     'clientOptions' => ['disabled' => false, 'showClear' => false,'onClick' => ]
+                        // ]);
+                    Html::button(
+                        'Beri Rating',
+                        [
+                            'value' => Url::to(['/tbl-sub-tiket/rating', 'id_sub_tiket' => $id]),
+                            'title' => 'Rating', 'class' => 'showModalButton btn btn-warning'
+                        ]
+                    );
+                },
+                ],
+                'template' => ' {rating} {proses}'
+
+            ],
+
         ],
-        
-            
-        [
-            'attribute' => 'notif_man',
-            'label' => 'Status',
-            'value' => function ($model) {
-                
-                return  \yii2mod\rating\StarRating::widget([
-                    'name' => 'input_name',
-                    'value' => 1,
-                    'clientOptions' => [
-                        // Your client options
-                    ],
-                    
-            //          'callback' => '
-            // function(){
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "' . Yii::$app->urlManager->createUrl(['site/index']) . '",
-            //         data: "star_rating=" + $(this).val(),
-            //         success: function(data){
-            //             $("#mystar_voting").html(data);
-            //         }
-            //     })
-            // }'
-                ]);
-            },
-            'format' => 'raw'
-        ],
-            
-     ],
     ]); ?>
-    
+
 </div>
+<?php
+yii\bootstrap\Modal::begin([
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'modal',
+    'size' => 'modal-lg',
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => true]
+]);
+echo "<div id='modalContent'></div>";
+yii\bootstrap\Modal::end();
+
+$this->registerJS(
+    "$(function(){
+        $(document).on('click', '.showModalButton', function(){
+        if ($('#modal').data('bs.modal').isShown) {
+        $('#modal').find('#modalContent')
+        .load($(this).attr('value'));
+        document.getElementById('modalHeader').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
+        } else {
+        $('#modal').modal('show')
+        .find('#modalContent')
+        .load($(this).attr('value'));
+        document.getElementById('modalHeader').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
+        }
+        });
+        });"
+)
+?>
