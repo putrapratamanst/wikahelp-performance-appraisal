@@ -58,6 +58,7 @@ class TblTiketController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
         $subTiket = TblSubTiket::find()->joinWith(['subKriteria','kriteria'])->where(['id_tiket' => $id]);
         
         $statusSubTiket = $subTiket->all();
@@ -69,15 +70,88 @@ class TblTiketController extends Controller
             }
         }
         $kuisioner = KuisionerResult::find()->where(['id_tiket' => $id, 'role' => 4])->all();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $subTiket,
         ]);
 
+        if ($model->status_tiket  === Constant::STATUS_DONE)
+        {
+            $sumRating = 0;
+            $dataWithoutNol = [];
+
+            foreach ($statusSubTiket as $valueSubTiket) {
+                $sumRating += $valueSubTiket->rating;
+
+                if ($valueSubTiket->rating != 0)
+                {
+                    $dataWithoutNol[] = $valueSubTiket->rating;
+                }
+            }
+            
+            $countRating = count($dataWithoutNol);
+            $bobotRating = array_sum($dataWithoutNol);
+            $hasilBobotRating = ($bobotRating / $countRating);
+
+            $kuisionerUser = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id])->andWhere(['kuisioner.role' => 4])->all();
+            $countKuisionerUser = [];
+            $jumlahKuisionerUser = 0;
+            foreach ($kuisionerUser as $valueKuisionerUser) {
+                $jumlahKuisionerUser += $valueKuisionerUser->result;
+            }
+            $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
+            $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
+
+
+            $kuisionerMansup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id])->andWhere(['kuisioner.role' => 3])->all();
+            $countKuisionerMansup = [];
+            $jumlahKuisionerMansup = 0;
+            foreach ($kuisionerMansup as $valueKuisionerMansup) {
+                $jumlahKuisionerMansup += $valueKuisionerMansup->result;
+            }
+            $perkalianKuisionerMansup = 10 * $jumlahKuisionerMansup;
+            $bobotMansup = $hasilBobotRating * ($perkalianKuisionerMansup / 100);
+
+
+            $kuisionerTechsup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id])->andWhere(['kuisioner.role' => 2])->all();
+            $countKuisionerTechsup = [];
+            $jumlahKuisionerTechsup = 0;
+            foreach ($kuisionerTechsup as $valueKuisionerTechsup) {
+                $jumlahKuisionerTechsup += $valueKuisionerTechsup->result;
+            }
+            $perkalianKuisionerTechsup = 10 * $jumlahKuisionerTechsup;
+            $bobotTechsup = $hasilBobotRating * ($perkalianKuisionerTechsup / 100);
+
+            $akhir = $bobotUser + $bobotMansup + $bobotTechsup;
+            $peringkat = "";
+            if ($akhir >= 5)   
+            {
+                $peringkat = "Sangat Baik";
+            }
+            if ($akhir < 4.99 && $akhir >= 4 )   
+            {
+                $peringkat = "Baik";
+            }
+            if ($akhir <= 3.99 && $akhir >= 3 )   
+            {
+                $peringkat = "Cukup Baik";
+            }
+            if ($akhir <= 2.99 && $akhir >= 2 )   
+            {
+                $peringkat = "Kurang Baik";
+            }
+            if ($akhir < 2 )   
+            {
+                $peringkat = "Sangat Kurang Baik";
+            }
+            
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'dataProvider' => $dataProvider,
             'kuisioner' => $kuisioner,
             'buttonClose' => $buttonClose,
+            'peringkat' => $peringkat,
         ]);
     }
 
@@ -101,6 +175,7 @@ class TblTiketController extends Controller
             $post = Yii::$app->request->post();
 
             foreach ($post['TblTiket'] as $key => $value) {
+                if (!empty($value)){
                 foreach ($value as $values) {
                     $findKriteria = TblSubKriteria::find()->where(['id_sub_kriteria' => $values])->one();
                     $subTiket = new TblSubTiket();
@@ -114,6 +189,7 @@ class TblTiketController extends Controller
                     ]);
                     $subTiket->save();
                 }
+            }
             }
 
             $model->save();

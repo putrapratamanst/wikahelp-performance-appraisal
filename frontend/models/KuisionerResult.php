@@ -31,7 +31,8 @@ class KuisionerResult extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_kuisioner', 'result', 'id_tiket', 'tempKuisioner'], 'string', 'max' => 45],
+            [['result', 'id_tiket', 'role'], 'string', 'max' => 45],
+            [['id_kuisioner'], 'integer', 'max' => 45],
         ];
     }
 

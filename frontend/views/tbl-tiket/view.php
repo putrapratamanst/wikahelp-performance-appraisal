@@ -30,13 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
     }
         if ($model->status_tiket == Constant::STATUS_DONE)
         {
-            
             if ($kuisioner)
             {
                 echo Html::a('Lihat Kuisioner', ['kuisioner-result/view', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
             }   else {
                 echo Html::a('Isi Kuisioner', ['kuisioner-result/create', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-primary']);
-            }     
+            }
+            ?>
+            <span class="pull-right" style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: red; font-size: 16px; line-height: 32px;">
+            Peringkat Keberhasilan:  <?= $peringkat; ?>  </span>
+
+<?php
         }
 
         if ($model->status_tiket == Constant::STATUS_PROCESS)
