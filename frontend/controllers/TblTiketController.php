@@ -109,8 +109,8 @@ class TblTiketController extends Controller
 
                 $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
                 $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
-                echo "<pre>";
-                die(print_r($bobotUser));
+                // echo "<pre>";
+                // die(print_r($bobotUser));
 
     
     

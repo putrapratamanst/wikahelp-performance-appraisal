@@ -117,6 +117,7 @@ class SiteController extends Controller
                         }
                         $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
                         $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
+                        // echo "<pre>";print_r($bobotUser);
 
         
                         $kuisionerMansup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 3])->all();
@@ -162,6 +163,7 @@ class SiteController extends Controller
                     }
                 }
             }
+        // die();            
         return $this->render('index');
     }
 
