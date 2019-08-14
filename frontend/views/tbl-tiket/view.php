@@ -49,8 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a('Ajukan Tiket', ['ajukan', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-warning']);
         }
 
+        $statusTiket = $model->status_tiket;
         ?>
-
     </p>
 
     <?= DetailView::widget([
@@ -105,8 +105,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'rating',
-                'value' => function ($model) {
-
+                'visible' => $statusTiket == Constant::STATUS_DONE ? true : false,
+                'value' => function ($model) use ($statusTiket) {
+                if ($statusTiket == Constant::STATUS_DONE)
+                {
                     return
                         StarRating::widget([
                             'name' => 'rating',
@@ -125,35 +127,43 @@ $this->params['breadcrumbs'][] = $this->title;
                     //     })
                     // }'
                     // ]);
+                }
                 },
+
                 'format' => 'raw'
             ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        return Html::a(
-                            '<span>Input Rating</span>',
-                            ['tbl-sub-tiket/rating', 'id' => $model->id_tiket]
-                        );
+                    'view' => function ($url, $model, $key) use ($statusTiket) {
+                        if ($statusTiket == Constant::STATUS_DONE)
+                        {
+                            return Html::a(
+                                '<span>Input Rating</span>',
+                                ['tbl-sub-tiket/rating', 'id' => $model->id_tiket]
+                            );
+                        }
                     },
-                'rating' => function ($url, $model) {
-                    $id = $model->id_sub_tiket;
-                    return
-
-                        // StarRating::widget([
-                        //     'name' => 'rating',
-                        //     'value' => $model->rating,
-                        //     'clientOptions' => ['disabled' => false, 'showClear' => false,'onClick' => ]
-                        // ]);
-                    Html::button(
-                        'Beri Rating',
-                        [
-                            'value' => Url::to(['/tbl-sub-tiket/rating', 'id_sub_tiket' => $id]),
-                            'title' => 'Rating', 'class' => 'showModalButton btn btn-warning'
-                        ]
-                    );
+                'rating' => function ($url, $model) use ($statusTiket) {
+                    if($statusTiket == Constant::STATUS_DONE)
+                    {
+                        $id = $model->id_sub_tiket;
+                        return
+    
+                            // StarRating::widget([
+                            //     'name' => 'rating',
+                            //     'value' => $model->rating,
+                            //     'clientOptions' => ['disabled' => false, 'showClear' => false,'onClick' => ]
+                            // ]);
+                        Html::button(
+                            'Beri Rating',
+                            [
+                                'value' => Url::to(['/tbl-sub-tiket/rating', 'id_sub_tiket' => $id]),
+                                'title' => 'Rating', 'class' => 'showModalButton btn btn-warning'
+                            ]
+                        );
+                    }
                 },
                 ],
                 'template' => ' {rating} {proses}'
