@@ -11,7 +11,9 @@ use yii\filters\VerbFilter;
 use frontend\models\TblSubTiket;
 use yii\data\ActiveDataProvider;
 use backend\models\KuisionerResult;
+use backend\models\TblAlternatifSearch;
 use common\helpers\Constant;
+use frontend\models\TblAlternatif;
 
 /**
  * TblTiketController implements the CRUD actions for TblTiket model.
@@ -43,6 +45,28 @@ class TblTiketController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionViewByUser($nama_alternatif)
+    {
+        $searchModel = new TblTiketSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $nama_alternatif);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPromothee()
+    {
+        $searchModel = new TblAlternatifSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('promothee', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

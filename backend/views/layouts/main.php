@@ -41,6 +41,36 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+    if (Yii::$app->user->identity->username == "techsup") {
+        $menuItems = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Promothee', 'url' => '/tbl-tiket/promothee'],
+            ['label' => 'Kelola Tiket', 'url' => '/tbl-tiket/index'],
+            [
+                'label' => 'Kelola Data',
+                'items' => [
+                    ['label' => 'Kelola Kriteria', 'url' => '/tbl-kriteria/index/'],
+                    ['label' => 'Kelola Alternatif', 'url' => '/tbl-alternatif/index/'],
+                ],
+            ],
+        ];
+    }
+
+    if (Yii::$app->user->identity->username == "mansup") {
+        $menuItems = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Kelola Tiket', 'url' => '/tbl-tiket/index'],
+            ['label' => 'Kelola Admin', 'url' => '/tbl-user/index'],
+            [
+                'label' => 'Kelola Data',
+                'items' => [
+                    ['label' => 'Kelola Kriteria', 'url' => '/tbl-kriteria/index/'],
+                    ['label' => 'Kelola Alternatif', 'url' => '/tbl-alternatif/index/'],
+                ],
+            ],
+        ];
+    }
+
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

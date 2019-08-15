@@ -50,4 +50,14 @@ class TblTiket extends \yii\db\ActiveRecord
             'status_tiket' => 'Status Tiket',
         ];
     }
+
+    public function getAlternatif()
+    {
+        return $this->hasOne(TblAlternatif::className(), ['id_alternatif' => 'id_alternatif']);
+    }
+
+
+    
+
+
 }

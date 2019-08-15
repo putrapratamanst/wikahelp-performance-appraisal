@@ -50,4 +50,10 @@ class TblAlternatif extends \yii\db\ActiveRecord
             'email_alternatif' => 'Email Alternatif',
         ];
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['username' => 'username']);
+    }
+
 }

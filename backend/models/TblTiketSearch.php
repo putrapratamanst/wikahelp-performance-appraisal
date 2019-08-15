@@ -39,14 +39,21 @@ class TblTiketSearch extends TblTiket
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $nama_alternatif = NULL)
     {   
         // $name = Yii::$app->user->identity->username;
         // if ($name == "mansup")
         // {
         //     $query = TblTiket::find()->where(['status_tiket' => Constant::STATUS_DONE]);
         // } else {
-            $query = TblTiket::find();
+            if($nama_alternatif)
+            {
+                $query = TblTiket::find()->joinWith(['alternatif.user'])->where(['user.username' => $nama_alternatif]);
+
+            } else {
+
+                $query = TblTiket::find();
+            }
         // }
 
         // add conditions that should always apply here

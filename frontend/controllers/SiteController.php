@@ -109,8 +109,6 @@ class SiteController extends Controller
 
                         $countRating = empty($dataWithoutNol) ? 0 : count($dataWithoutNol);
                         $bobotRating = empty($dataWithoutNol) ? 0 : array_sum($dataWithoutNol);
-                    echo "<pre>";
-                    print_r($countRating);
 
                         $hasilBobotRating = empty($dataWithoutNol) ? 0 : ($bobotRating / $countRating);
 

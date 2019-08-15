@@ -114,20 +114,15 @@ class KuisionerResultController extends Controller
                         'role' => "2",
                     ];
 
-                    array_push($modelTemp, $modelAttribute);
+                    // array_push($modelTemp, $modelAttribute);
                 }
-            }
 
-            foreach ($modelTemp as $modelTempValue) :
-                
+
                 $model = new KuisionerResult();
-                $model->setAttributes($modelTempValue);
+                $model->setAttributes($modelAttribute);
                 $model->save();
-            // if (!$model->save()) {
-            //     return json_encode($model->errors);
-            // }
-            endforeach;
 
+            }
 
 
             return $this->redirect(['view', 'id_tiket' => $id_tiket]);
@@ -182,21 +177,13 @@ class KuisionerResultController extends Controller
                         'role' => "3",
                     ];
 
-                    array_push($modelTemp, $modelAttribute);
+                    // array_push($modelTemp, $modelAttribute);
                 }
-            }
-
-            foreach ($modelTemp as $modelTempValue) :
-                
                 $model = new KuisionerResult();
-                $model->setAttributes($modelTempValue);
+                $model->setAttributes($modelAttribute);
                 $model->save();
-            // if (!$model->save()) {
-            //     return json_encode($model->errors);
-            // }
-            endforeach;
 
-
+            }
 
             return $this->redirect(['view', 'id_tiket' => $id_tiket]);
         }

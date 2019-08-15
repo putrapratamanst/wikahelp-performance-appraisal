@@ -186,22 +186,15 @@ class KuisionerResultController extends Controller
                         'role' => "4",
                     ];
 
-                    array_push($modelTemp, $modelAttribute);
+                    // array_push($modelTemp, $modelAttribute);
                 }
+                $model = new KuisionerResult();
+                $model->setAttributes($modelAttribute);
+                $model->save();
+
             }
 
-            foreach ($modelTemp as $modelTempValue) :
-
-                $model = new KuisionerResult();
-                $model->setAttributes($modelTempValue);
-                $model->save();
-            // if (!$model->save()) {
-            //     return json_encode($model->errors);
-            // }
-            endforeach;
-
-
-
+            
             return $this->redirect(['view', 'id_tiket' => $id_tiket]);
         }
 
