@@ -31,8 +31,12 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup','index'],
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                     [
                         'actions' => ['signup'],
                         'allow' => true,
@@ -43,6 +47,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    
                 ],
             ],
             'verbs' => [
@@ -104,10 +109,11 @@ class SiteController extends Controller
 
                         $countRating = empty($dataWithoutNol) ? 0 : count($dataWithoutNol);
                         $bobotRating = empty($dataWithoutNol) ? 0 : array_sum($dataWithoutNol);
-        
+                    echo "<pre>";
+                    print_r($countRating);
+
                         $hasilBobotRating = empty($dataWithoutNol) ? 0 : ($bobotRating / $countRating);
-        
-        
+
                         $kuisionerUser = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 4])->all();
 
                         $countKuisionerUser = [];
@@ -117,7 +123,6 @@ class SiteController extends Controller
                         }
                         $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
                         $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
-                        // echo "<pre>";print_r($bobotUser);
 
         
                         $kuisionerMansup = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $valueTiket->id_tiket])->andWhere(['kuisioner.role' => 3])->all();

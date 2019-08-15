@@ -78,7 +78,6 @@ class TblTiketController extends Controller
 
         if ($model->status_tiket == Constant::STATUS_DONE && $kuisioner)
         {
-
             $sumRating = 0;
             $dataWithoutNol = [];
 
@@ -93,12 +92,15 @@ class TblTiketController extends Controller
                         $dataWithoutNol[] = $valueSubTiket->rating;
                     }
                 }
-                
+
+
                 $countRating = empty($dataWithoutNol) ? 0 : count($dataWithoutNol);
                 $bobotRating = empty($dataWithoutNol) ? 0 : array_sum($dataWithoutNol);
+                echo "<pre>";
+                print_r($countRating);
 
                 $hasilBobotRating = empty($dataWithoutNol) ? 0 : ($bobotRating / $countRating);
-    
+
                 $kuisionerUser = KuisionerResult::find()->joinWith(['kuisioner'])->where(['kuisioner_result.id_tiket' => $id])->andWhere(['kuisioner.role' => 4])->all();
 
                 $countKuisionerUser = [];
@@ -109,8 +111,6 @@ class TblTiketController extends Controller
 
                 $perkalianKuisionerUser = 10 * $jumlahKuisionerUser;
                 $bobotUser = $hasilBobotRating * ($perkalianKuisionerUser / 100);
-                // echo "<pre>";
-                // die(print_r($bobotUser));
 
     
     

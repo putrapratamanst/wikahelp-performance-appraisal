@@ -156,7 +156,7 @@ class KuisionerResultController extends Controller
             $odd = array();
             $even = array();
             $countOdd = 1;
-
+            
             foreach ($post['KuisionerResult']['tempKuisioner'] as $valueKuisioner) {
                 if ($countOdd % 2 == 1) {
                     $odd[] = $valueKuisioner;
