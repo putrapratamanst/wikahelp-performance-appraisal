@@ -14,14 +14,6 @@ use yii\grid\GridView;
 
 <div class="site-index">
 
-    <div>
-        <center>
-            <h1>Selamat Datang <?= Yii::$app->user->identity->username ?>!</h1>
-        </center>
-
-
-    </div>
-
     <div id="container" style="width:100%; height:400px;"></div>
 
     <?php if (Yii::$app->user->identity->username == "admin") { ?>
@@ -97,30 +89,29 @@ use yii\grid\GridView;
                 ]);
                 ?>
         </div>
-        <div class="col-lg-4">
-            <h2>Status Tiket</h2>
-            <?php
-                $selesai = $tiket->where(['status_tiket' => Constant::STATUS_DONE])->count();
-                $proses = $tiket->where(['status_tiket' => Constant::STATUS_PROCESS])->count();
-                $submit = $tiket->where(['status_tiket' => Constant::STATUS_SUBMIT])->count();
-                ?>
-            <p>
-                <!-- 
+        <br>
+        <?php
+            $selesai = $tiket->where(['status_tiket' => Constant::STATUS_DONE])->count();
+            $proses = $tiket->where(['status_tiket' => Constant::STATUS_PROCESS])->count();
+            $submit = $tiket->where(['status_tiket' => Constant::STATUS_SUBMIT])->count();
+            ?>
+        <!-- 
                 <p><a class="btn btn-default"> :</a></p>
                 <p><a class="btn btn-default">Tiket Diterima : </a></p>
                 <p><a class="btn btn-default">Tiket Diterima : </a></p> -->
-        </div>
     </div>
 
     <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                <a href="/tbl-tiket/selesai">
+                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Tiket Selesai</span>
-                    <span class="info-box-number"> <?= $selesai; ?><small></small></span>
-                </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Tiket Selesai</span>
+                        <span class="info-box-number"> <?= $selesai; ?><small></small></span>
+                    </div>
+                </a>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
@@ -128,12 +119,14 @@ use yii\grid\GridView;
         <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-envelope"></i></span>
+                <a href="/tbl-tiket/proses">
+                    <span class="info-box-icon bg-red"><i class="fa fa-envelope"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Tiket Diterima</span>
-                    <span class="info-box-number"><?= $submit; ?></span>
-                </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Tiket Belum Diproses</span>
+                        <span class="info-box-number"><?= $submit; ?></span>
+                    </div>
+                </a>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
@@ -145,12 +138,15 @@ use yii\grid\GridView;
 
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                <a href="/tbl-tiket/diterima">
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Tiket Diproses</span>
-                    <span class="info-box-number"><?= $proses; ?></span>
-                </div>
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Tiket Diterima</span>
+                        <span class="info-box-number"><?= $proses; ?></span>
+                    </div>
+                </a>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
@@ -348,31 +344,44 @@ use yii\grid\GridView;
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-                // $.getJSON('tbl-tiket/chart', function(chartData) {
-                    var myChart = Highcharts.chart('container', {
-                        chart: {
-                            type: 'bar'
-                        },
-                        title: {
-                            text: 'Grafik Performa'
-                        },
-                        xAxis: {
-                            categories: ['Sangat Baik', 'Baik', 'Cukup Baik', 'Kurang Baik', 'Sangat Kurang Baik']
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'Tiket'
-                            }
-                        },
-                        series: [{
-                            name: 'Jane',
-                            data: [1, 0, 4]
-                        }, {
-                            name: 'John',
-                            data: [5, 7, 3]
-                        }]
-                    });
-                // }   )
-                });
+        $.getJSON('tbl-tiket/chart', function(chartData) {
+            var myChart = Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Grafik Performa'
+                },
+                xAxis: {
+                    categories: ['Sangat Baik', 'Baik', 'Cukup Baik', 'Kurang Baik', 'Sangat Kurang Baik']
+                },
+                yAxis: {
+                    title: {
+                        text: '360 Degree'
+                    }
+                },
+                // series: [{
+                //     "name": 'TK-0021',
+                //     "data": [
+                //         0,
+                //         0,
+                //         3.4714285714285715,
+                //         0,
+                //         0
+                //     ]
+                // }, {
+                //     "name": 'TK-0022',
+                //     "data": [
+                //         0,
+                //         0,
+                //         0,
+                //         3.4714285714285715,
+                //         0
+                //     ]
+                // }]
+                series: chartData
+            });
+        })
+    });
 </script>
 <script src="https://code.highcharts.com/highcharts.js"></script>

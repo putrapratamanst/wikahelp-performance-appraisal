@@ -12,6 +12,7 @@ use backend\models\User;
 use backend\models\TblAlternatif;
 use backend\models\TblSubKriteria;
 use common\helpers\Constant;
+use yii\filters\AccessControl;
 
 /**
  * TblSubTiketController implements the CRUD actions for TblSubTiket model.
@@ -24,6 +25,17 @@ class TblSubTiketController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['*'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
