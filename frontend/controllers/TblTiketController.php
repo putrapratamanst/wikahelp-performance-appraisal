@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\models\TblAlternatif;
 use Yii;
 use frontend\models\TblTiket;
 use frontend\models\TblKriteria;
@@ -311,9 +312,12 @@ class TblTiketController extends Controller
      */
     public function actionCreate()
     {
+        $name = Yii::$app->user->identity->username;
         $model = new TblTiket();
         $model->id_tiket = $model->reformattedId();
-        $model->id_alternatif = $model->find()->select('tbl_alternatif.id_alternatif')->joinWith('alternatif')->one()['id_alternatif'];
+        $model->id_alternatif = TblAlternatif::find()
+            ->where(['username' => $name])->one()['id_alternatif'];
+
         $model->wkt_tiket = date("H:i:s");
         $model->tgl_tiket = date("Y-m-d");
         $model->status_tiket = Constant::STATUS_PROCESS;
@@ -321,6 +325,7 @@ class TblTiketController extends Controller
         $kriteria = TblKriteria::find()->all();
 
         if ($model->load(Yii::$app->request->post())) {
+
             $post = Yii::$app->request->post();
 
             foreach ($post['TblTiket'] as $key => $value) {
