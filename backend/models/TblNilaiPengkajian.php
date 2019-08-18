@@ -64,7 +64,7 @@ class TblNilaiPengkajian extends \yii\db\ActiveRecord
             'id_alternatif1' => $id_alternatif1,
             'id_alternatif2' => $id_alternatif2,
         );
-        $data_row = TblNilaiMatrix::find()->where(['id_nilai_matrix' => $id])->all();
+        $data_row = TblNilaiMatrix::find()->where(['id_alternatif1' => $id_alternatif1])->andWhere(['id_alternatif2' => $id_alternatif2])->all();
 
         foreach ($data_row as $row) {
             $data += $row->nilai_matrix;

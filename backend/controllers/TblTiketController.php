@@ -139,7 +139,6 @@ class TblTiketController extends Controller
             }
         }
 
-
         if (isset($data_alternatif)) {
             foreach ($data_alternatif as $row) {
                 if (isset($data_alternatif)) {
@@ -159,7 +158,6 @@ class TblTiketController extends Controller
                 }
             }
         }
-
         $searchModel = new TblAlternatifSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

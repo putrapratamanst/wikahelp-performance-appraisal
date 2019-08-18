@@ -71,8 +71,6 @@ class TblNilaiMatrix extends \yii\db\ActiveRecord
 
     public function nm_sub_kriteria($id_sub_kriteria)
     {
-        global $CI;
-
         $data = '';
         $id = array(
             'id_sub_kriteria' => $id_sub_kriteria,
@@ -106,20 +104,27 @@ class TblNilaiMatrix extends \yii\db\ActiveRecord
 
     public function bobot_value_sub_kriteria($id_alternatif, $id_kriteria)
     {
-        global $CI;
-
         $data = '0';
-        $id = array(
-            'id_alternatif' => $id_alternatif,
-            'id_kriteria' => $id_kriteria,
-        );
-        $data_row = TblNilaiAlternatif::find()->where(['id_nilai_alternatif' => $id])->all();
+        $data_row = TblNilaiAlternatif::find()->where(['id_alternatif' => $id_alternatif])->andWhere(['id_kriteria' => $id_kriteria])->all();
 
         foreach ($data_row as $row) {
-            $data += bobot_sub_kriteria($row->id_sub_kriteria);
+            $data += self::bobot_sub_kriteria($row->id_sub_kriteria);
         }
+
         return $data;
     }
 
+
+    public function bobot_sub_kriteria($id_sub_kriteria)
+    {
+        $data = '';
+
+        $data_row = TblSubKriteria::find()->where(['id_sub_kriteria' => $id_sub_kriteria])->all();
+
+        foreach ($data_row as $row) {
+            $data = $row->bobot_sub_kriteria;
+        }
+        return $data;
+    }
 
 }
