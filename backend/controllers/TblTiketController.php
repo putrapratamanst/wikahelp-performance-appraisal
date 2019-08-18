@@ -12,8 +12,11 @@ use frontend\models\TblSubTiket;
 use yii\data\ActiveDataProvider;
 use backend\models\KuisionerResult;
 use backend\models\TblAlternatifSearch;
+use backend\models\TblNilaiMatrix;
 use common\helpers\Constant;
 use frontend\models\TblAlternatif;
+use frontend\models\TblKriteria;
+use backend\models\TblNilaiPengkajian;
 use yii\filters\AccessControl;
 
 /**
@@ -108,6 +111,55 @@ class TblTiketController extends Controller
 
     public function actionPromothee()
     {
+        Yii::$app->db->createCommand()->truncateTable('tbl_nilai_matrix')->execute();
+        Yii::$app->db->createCommand()->truncateTable('tbl_nilai_pengkajian')->execute();
+
+        $data_kriteria = TblKriteria::find()->all();
+        $data_alternatif = TblAlternatif::find()->all();
+
+        foreach ($data_kriteria as $row_kriteria) {
+            if (isset($data_alternatif)) {
+                foreach ($data_alternatif as $row) {
+                    if (isset($data_alternatif)) {
+                        foreach ($data_alternatif as $row2) {
+                            if ($row->nm_alternatif != $row2->nm_alternatif) {
+                                $dataMatrix = new TblNilaiMatrix();
+                                $dataMatrixAttributes = array(
+                                    'id_nilai_matrix' => $dataMatrix->reformattedIdMatrix(),
+                                    'id_alternatif1' => $row->id_alternatif,
+                                    'id_alternatif2' => $row2->id_alternatif,
+                                    'nilai_matrix' => $dataMatrix->matrixp($row->id_alternatif, $row2->id_alternatif, $row_kriteria->id_kriteria),
+                                );
+                                $dataMatrix->setAttributes($dataMatrixAttributes);
+                                $dataMatrix->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (isset($data_alternatif)) {
+            foreach ($data_alternatif as $row) {
+                if (isset($data_alternatif)) {
+                    foreach ($data_alternatif as $row2) {
+                        $dataPengkajian = new TblNilaiPengkajian();
+
+                        $dataPengkajianAttributes = array(
+                            'id_nilai_pengkajian' => $dataPengkajian->reformattedIdPengkajian(),
+                            'id_alternatif1' => $row->id_alternatif,
+                            'id_alternatif2' => $row2->id_alternatif,
+                            'nilai_pengkajian' => $dataPengkajian->pengkajian_metode($row->id_alternatif, $row2->id_alternatif) / 4,
+                        );
+
+                        $dataPengkajian->setAttributes($dataPengkajianAttributes);
+                        $dataPengkajian->save();
+                    }
+                }
+            }
+        }
+
         $searchModel = new TblAlternatifSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

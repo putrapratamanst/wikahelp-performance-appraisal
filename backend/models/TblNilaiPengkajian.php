@@ -29,7 +29,8 @@ class TblNilaiPengkajian extends \yii\db\ActiveRecord
     {
         return [
             [['id_nilai_pengkajian', 'id_alternatif1', 'id_alternatif2', 'nilai_pengkajian'], 'required'],
-            [['id_nilai_pengkajian', 'id_alternatif1', 'id_alternatif2', 'nilai_pengkajian'], 'string', 'max' => 100],
+            [['id_nilai_pengkajian', 'id_alternatif1', 'id_alternatif2'], 'string', 'max' => 100],
+            [['nilai_pengkajian'], 'safe'],
             [['id_nilai_pengkajian'], 'unique'],
         ];
     }
@@ -46,4 +47,29 @@ class TblNilaiPengkajian extends \yii\db\ActiveRecord
             'nilai_pengkajian' => 'Nilai Pengkajian',
         ];
     }
+
+    public function reformattedIdPengkajian()
+    {
+        $id     = $this->find()->max('RIGHT(id_nilai_pengkajian,5)');
+        $tmp    = ((int) $id) + 1;
+        $result = sprintf("%05s", $tmp);
+
+        return "NP-" . $result;
+    }
+
+    function pengkajian_metode($id_alternatif1, $id_alternatif2)
+    {
+        $data = '0';
+        $id = array(
+            'id_alternatif1' => $id_alternatif1,
+            'id_alternatif2' => $id_alternatif2,
+        );
+        $data_row = TblNilaiMatrix::find()->where(['id_nilai_matrix' => $id])->all();
+
+        foreach ($data_row as $row) {
+            $data += $row->nilai_matrix;
+        }
+        return $data;
+    }
+
 }

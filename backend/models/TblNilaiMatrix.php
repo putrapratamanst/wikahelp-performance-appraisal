@@ -29,7 +29,8 @@ class TblNilaiMatrix extends \yii\db\ActiveRecord
     {
         return [
             [['id_nilai_matrix', 'id_alternatif1', 'id_alternatif2', 'nilai_matrix'], 'required'],
-            [['id_nilai_matrix', 'id_alternatif1', 'id_alternatif2', 'nilai_matrix'], 'string', 'max' => 100],
+            [['id_nilai_matrix', 'id_alternatif1', 'id_alternatif2'], 'string', 'max' => 100],
+            [['nilai_matrix'], 'safe'],
             [['id_nilai_matrix'], 'unique'],
         ];
     }
@@ -46,4 +47,79 @@ class TblNilaiMatrix extends \yii\db\ActiveRecord
             'nilai_matrix' => 'Nilai Matrix',
         ];
     }
+
+    public function reformattedIdMatrix()
+    {
+        $id     = $this->find()->max('RIGHT(id_nilai_matrix,5)');
+        $tmp    = ((int) $id) + 1;
+        $result = sprintf("%05s", $tmp);
+
+        return "NM-" . $result;
+    }
+
+    public function matrixp($id_alternatif1, $id_alternatif2, $id_kriteria)
+    {
+        $nilai1 = self::bobot_value_sub_kriteria($id_alternatif1, $id_kriteria);
+        $nilai2 = self::bobot_value_sub_kriteria($id_alternatif2, $id_kriteria);
+        if ($nilai1 > $nilai2) {
+            $data = 1;
+        } else {
+            $data = 0;
+        }
+        return $data;
+    }
+
+    public function nm_sub_kriteria($id_sub_kriteria)
+    {
+        global $CI;
+
+        $data = '';
+        $id = array(
+            'id_sub_kriteria' => $id_sub_kriteria,
+        );
+        $data_row = TblSubKriteria::find()->where(['id_sub_kriteria' => $id])->all();
+
+        foreach ($data_row as $row) {
+            $data = $row->nm_sub_kriteria;
+        }
+        return $data;
+    }
+
+
+    public function value_sub_kriteria($id_alternatif, $id_kriteria)
+    {
+
+        $data = '';
+        $id_sub_kriteria = '';
+        $id = array(
+            'id_alternatif' => $id_alternatif,
+            'id_kriteria' => $id_kriteria,
+        );
+        $data_row = TblNilaiAlternatif::find()->where(['id_nilai_alternatif' => $id])->all();
+
+        foreach ($data_row as $row) {
+            $data .= ' - ' . nm_sub_kriteria($row->id_sub_kriteria) . '<br>';
+        }
+        $data .= '[.....]<br>';
+        return $data;
+    }
+
+    public function bobot_value_sub_kriteria($id_alternatif, $id_kriteria)
+    {
+        global $CI;
+
+        $data = '0';
+        $id = array(
+            'id_alternatif' => $id_alternatif,
+            'id_kriteria' => $id_kriteria,
+        );
+        $data_row = TblNilaiAlternatif::find()->where(['id_nilai_alternatif' => $id])->all();
+
+        foreach ($data_row as $row) {
+            $data += bobot_sub_kriteria($row->id_sub_kriteria);
+        }
+        return $data;
+    }
+
+
 }

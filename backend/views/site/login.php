@@ -19,17 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                </div>
+            <?= $form->field($model, 'password')->passwordInput() ?>
+            <div class="form-group">
+                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>
+        <div class="col-lg-7">
+            <div class="pull-right image">
+                <img src="/uploads/WikaLogo.png" alt="User Image" width="500">
+            </div>
+        </div>
+
     </div>
 </div>
