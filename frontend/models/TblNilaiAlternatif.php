@@ -29,7 +29,7 @@ class TblNilaiAlternatif extends \yii\db\ActiveRecord
     {
         return [
             [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'required'],
-            [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'string', 'max' => 100],
+            [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'safe'],
             [['id_nilai_alternatif'], 'unique'],
         ];
     }
@@ -46,4 +46,14 @@ class TblNilaiAlternatif extends \yii\db\ActiveRecord
             'id_sub_kriteria' => 'Id Sub Kriteria',
         ];
     }
+
+    public function reformattedId()
+    {
+        $id     = $this->find()->max('RIGHT(id_nilai_alternatif,4)');
+        $tmp    = ((int) $id) + 1;
+        $result = sprintf("%05s", $tmp);
+        
+        return "NAL-". $result;
+    }
+
 }

@@ -15,6 +15,7 @@ use common\helpers\Constant;
 use frontend\models\TblSubTiket;
 use yii\data\ActiveDataProvider;
 use frontend\models\KuisionerResult;
+use frontend\models\TblNilaiAlternatif;
 use yii\filters\AccessControl;
 
 /**
@@ -336,16 +337,26 @@ class TblTiketController extends Controller
                     $subTiket->setAttributes([
                         'id_tiket'      => $model->id_tiket,
                         'id_alternatif' => $model->id_alternatif,
-                        'id_kriteria' => $findKriteria  ['id_kriteria'],
+                        'id_kriteria' => $findKriteria['id_kriteria'],
                         'id_sub_kriteria' => $values,
                         'status' => Constant::STATUS_PROCESS,
                         'created_date' => date("Y-m-d")
                     ]);
                     $subTiket->save();
+
+                    $nilaiAlternatif = new TblNilaiAlternatif();
+                    $data=array(
+                        'id_nilai_alternatif'=>$nilaiAlternatif->reformattedId(),
+                        'id_alternatif'=>$model->id_alternatif,
+                        'id_kriteria'=>$findKriteria['id_kriteria'],
+                        'id_sub_kriteria'=>$values,
+                    );
+                    $nilaiAlternatif->setAttributes($data);
+                    $nilaiAlternatif->save();
+
                 }
             }
-            }
-
+        }
             $model->save();
 
             return $this->redirect(['view', 'id' => $model->id_tiket]);
@@ -427,7 +438,7 @@ class TblTiketController extends Controller
     public function actionStatusBatal($id)
     {
         $model = $this->findModel($id);
-        $model->status_tiket = Constant::STATUS_SUBMIT;
+        $model->status_tiket = Constant::STATUS_PROCESS;
 
         $model->save();
 
