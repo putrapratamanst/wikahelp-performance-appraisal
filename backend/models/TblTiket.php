@@ -60,7 +60,4 @@ class TblTiket extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TblSubTiket::className(), ['id_tiket' => 'id_tiket']);
     }
-   
-
-
 }

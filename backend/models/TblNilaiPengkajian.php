@@ -57,7 +57,7 @@ class TblNilaiPengkajian extends \yii\db\ActiveRecord
         return "NP-" . $result;
     }
 
-    function pengkajian_metode($id_alternatif1, $id_alternatif2)
+    public function pengkajian_metode($id_alternatif1, $id_alternatif2)
     {
         $data = '0';
         $id = array(

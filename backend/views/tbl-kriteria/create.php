@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\TblKriteria */
 
-$this->title = 'Create Tbl Kriteria';
-$this->params['breadcrumbs'][] = ['label' => 'Tbl Kriterias', 'url' => ['index']];
+$this->title = 'Create Kriteria';
+$this->params['breadcrumbs'][] = ['label' => 'List Kriteria', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tbl-kriteria-create">

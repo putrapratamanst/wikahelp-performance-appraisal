@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\TblUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tbl Users';
+$this->title = 'List User';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tbl-user-index">
@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'summary' => '',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

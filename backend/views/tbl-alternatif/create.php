@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\TblAlternatif */
 
-$this->title = 'Create Tbl Alternatif';
-$this->params['breadcrumbs'][] = ['label' => 'Tbl Alternatifs', 'url' => ['index']];
+$this->title = 'Create Alternatif';
+$this->params['breadcrumbs'][] = ['label' => 'List Alternatif', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tbl-alternatif-create">

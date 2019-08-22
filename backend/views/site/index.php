@@ -123,8 +123,8 @@ use yii\grid\GridView;
                     <span class="info-box-icon bg-red"><i class="fa fa-envelope"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Tiket Belum Diproses</span>
-                        <span class="info-box-number"><?= $submit; ?></span>
+                        <span class="info-box-text">Tiket Diterima</span>
+                        <span class="info-box-number"><?= $proses; ?></span>
                     </div>
                 </a>
                 <!-- /.info-box-content -->
@@ -143,8 +143,8 @@ use yii\grid\GridView;
                     <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Tiket Diterima</span>
-                        <span class="info-box-number"><?= $proses; ?></span>
+                        <span class="info-box-text">Tiket Belum Diproses</span>
+                        <span class="info-box-number"><?= $submit; ?></span>
                     </div>
                 </a>
                 <!-- /.info-box-content -->

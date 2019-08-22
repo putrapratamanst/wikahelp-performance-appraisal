@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\TblUser */
 
 $this->title = $model->id_user;
-$this->params['breadcrumbs'][] = ['label' => 'Tbl Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'List User', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

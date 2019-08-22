@@ -56,13 +56,22 @@ class TblTiketController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TblTiketSearch();
+        // $searchModel = new TblTiketSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        // return $this->render('index', [
+        //     'searchModel' => $searchModel,
+        //     'dataProvider' => $dataProvider,
+        // ]);
+
+        $searchModel = new TblAlternatifSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+
     }
 
     public function actionSelesai()
@@ -70,7 +79,7 @@ class TblTiketController extends Controller
         $searchModel = new TblTiketSearch();
         $dataProvider = $searchModel->searchSelesai(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index_user', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -81,7 +90,7 @@ class TblTiketController extends Controller
         $searchModel = new TblTiketSearch();
         $dataProvider = $searchModel->searchProses(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index_user', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -92,7 +101,7 @@ class TblTiketController extends Controller
         $searchModel = new TblTiketSearch();
         $dataProvider = $searchModel->searchDiterima(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index_user', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -103,7 +112,7 @@ class TblTiketController extends Controller
         $searchModel = new TblTiketSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $nama_alternatif);
 
-        return $this->render('index', [
+        return $this->render('index_user', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -288,6 +297,7 @@ class TblTiketController extends Controller
         // die();
 
         $result = 
+        
         [
 
             [
