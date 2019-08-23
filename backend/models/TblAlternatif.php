@@ -42,12 +42,12 @@ class TblAlternatif extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_alternatif' => 'Id Alternatif',
-            'kd_alternatif' => 'Kd Alternatif',
-            'nm_alternatif' => 'Nm Alternatif',
+            'id_alternatif' => 'Id Pegawai',
+            'kd_alternatif' => 'Kode Pegawai',
+            'nm_alternatif' => 'Nama Pegawai',
             'username' => 'Username',
             'password' => 'Password',
-            'email_alternatif' => 'Email Alternatif',
+            'email_alternatif' => 'Email Pegawai',
         ];
     }
 

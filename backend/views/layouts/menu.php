@@ -1,5 +1,5 @@
                 <?php
-                if (Yii::$app->user->identity->username == "techsup") {
+                if (Yii::$app->user->identity->role == 2) {
                     ?>
 
                 <ul class="sidebar-menu" data-widget="tree">
@@ -14,43 +14,68 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/tbl-kriteria/index"><i class="fa fa-circle-o"></i> Kelola Kriteria</a></li>
-                            <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
-                            <li><a href="/tbl-alternatif/index"><i class="fa fa-circle-o"></i> Kelola Alternatif</a></li>
                             <li><a href="/tbl-tiket/promothee"><i class="fa fa-circle-o"></i> Promothee</a></li>
-                        </ul>
-                    </li>
-                    <?php } ?>
-                <?php
-                if (Yii::$app->user->identity->username == "mansup" ||  Yii::$app->user->identity->username == "admin") {
-                    ?>
+                            <li><a href="/tbl-user/index"><i class="fa fa-circle-o"></i> Kelola User</a></li>
 
-                <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">MAIN NAVIGATION</li>
-                    <li><a href="/"><i class="fa fa-home"></i> Beranda </a></li>
-
-                    <li class="treeview menu">
-                        <a href="#">
-                            <i class="fa fa-edit"></i> <span>Kelola Data</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="/tbl-kriteria/index"><i class="fa fa-circle-o"></i> Kelola Kriteria</a></li>
-                            <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
-                            <li><a href="/tbl-alternatif/index"><i class="fa fa-circle-o"></i> Kelola Alternatif</a></li>
-                            <li><a href="/tbl-user/index"><i class="fa fa-circle-o"></i> Kelola Admin</a></li>
                         </ul>
                     </li>
                     <?php } ?>
                     <?php
-                    if (!Yii::$app->user->isGuest) { ?>
+                    if (Yii::$app->user->identity->role == 3) {
+                        ?>
 
-                    <li><a href="/site/logout"><i class="fa fa-circle-o"></i> Logout</a></li>
-                    <?php } ?>
+                    <ul class="sidebar-menu" data-widget="tree">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li><a href="/"><i class="fa fa-home"></i> Beranda </a></li>
 
-                    <!-- <li class="treeview">
+                        <li class="treeview menu">
+                            <a href="#">
+                                <i class="fa fa-edit"></i> <span>Kelola Data</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="/tbl-tiket/promothee"><i class="fa fa-circle-o"></i> Promothee</a></li>
+                                <li><a href="/tbl-kriteria/index"><i class="fa fa-circle-o"></i> Kelola Kriteria</a></li>
+                                <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
+                            </ul>
+                        </li>
+                        <?php } ?>
+
+                        <?php
+                        if (Yii::$app->user->identity->role == 1) {
+                            ?>
+
+                        <ul class="sidebar-menu" data-widget="tree">
+                            <li class="header">MAIN NAVIGATION</li>
+                            <li><a href="/"><i class="fa fa-home"></i> Beranda </a></li>
+
+                            <li class="treeview menu">
+                                <a href="#">
+                                    <i class="fa fa-edit"></i> <span>Kelola Data</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/tbl-tiket/promothee"><i class="fa fa-circle-o"></i> Promothee</a></li>
+                                    <li><a href="/tbl-alternatif/index"><i class="fa fa-circle-o"></i> Kelola Pegawai</a></li>
+                                    <li><a href="/tbl-user/index"><i class="fa fa-circle-o"></i> Kelola User</a></li>
+                                    <li><a href="/kuisioner/index"><i class="fa fa-circle-o"></i> Kelola Kuisioner</a></li>
+                                    <li><a href="/tbl-kriteria/index"><i class="fa fa-circle-o"></i> Kelola Kriteria</a></li>
+                                    <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
+                                    <li><a href="/tbl-tiket/report"><i class="fa fa-circle-o"></i> Cetak Laporan</a></li>
+                                </ul>
+                            </li>
+                            <?php } ?>
+                            <?php
+                            if (!Yii::$app->user->isGuest) { ?>
+
+                            <li><a href="/site/logout"><i class="fa fa-circle-o"></i> Logout</a></li>
+                            <?php } ?>
+
+                            <!-- <li class="treeview">
                         <a href="#">
                             <i class="fa fa-files-o"></i>
                             <span>Layout Options</span>
@@ -201,4 +226,4 @@
                             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
                         </ul>
                     </li> -->
-                </ul>
+                        </ul>

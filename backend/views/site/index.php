@@ -43,8 +43,6 @@ use yii\grid\GridView;
     <?php if (Yii::$app->user->identity->username == "mansup" || Yii::$app->user->identity->username == "techsup") { ?>
     <div class="row">
         <div class="col-lg-8">
-
-
             <?php
                 $username = Yii::$app->user->identity->username;
                 $tiket = TblTiket::find()->joinWith(['alternatif.user'])->where(['user.username' => $username]);
@@ -53,40 +51,40 @@ use yii\grid\GridView;
                     $idTiket[] = $value['id_tiket'];
                 }
 
-                echo \dosamigos\highcharts\HighCharts::widget([
-                    'clientOptions' => [
-                        'chart' => [
-                            'type' => 'column'
-                        ],
-                        'title' => [
-                            'text' => 'Index Performance'
-                        ],
-                        'xAxis' => [
-                            'categories' =>
-                            [
-                                'Desta',
-                                'Aisyah',
-                                'Kukuh',
-                                'Ahmad',
-                                'Wahyu',
-                                'Fauzan',
-                                'Rizal',
-                            ]
-                        ],
-                        'yAxis' => [
-                            'title' => [
-                                'text' => 'Nilai'
-                            ]
-                        ],
-                        'series' => [
-                            ['name' => 'Sangat Kurang Baik', 'data' => [0, 0, 5, 0, 0, 0, 0,]],
-                            ['name' => 'Kurang Baik', 'data' => [0, 0, 0, 0, 4, 0, 0]],
-                            ['name' => 'Cukup Baik', 'data' => [0, 0, 0, 3, 0, 0, 0]],
-                            ['name' => 'Baik', 'data' => [1, 0, 0, 0, 0, 0, 0]],
-                            ['name' => 'Sangat Baik', 'data' => [0, 2, 0, 0, 0, 0, 0]],
-                        ]
-                    ]
-                ]);
+                // echo \dosamigos\highcharts\HighCharts::widget([
+                //     'clientOptions' => [
+                //         'chart' => [
+                //             'type' => 'column'
+                //         ],
+                //         'title' => [
+                //             'text' => 'Index Performance'
+                //         ],
+                //         'xAxis' => [
+                //             'categories' =>
+                //             [
+                //                 'Desta',
+                //                 'Aisyah',
+                //                 'Kukuh',
+                //                 'Ahmad',
+                //                 'Wahyu',
+                //                 'Fauzan',
+                //                 'Rizal',
+                //             ]
+                //         ],
+                //         'yAxis' => [
+                //             'title' => [
+                //                 'text' => 'Nilai'
+                //             ]
+                //         ],
+                //         'series' => [
+                //             ['name' => 'Sangat Kurang Baik', 'data' => [0, 0, 5, 0, 0, 0, 0,]],
+                //             ['name' => 'Kurang Baik', 'data' => [0, 0, 0, 0, 4, 0, 0]],
+                //             ['name' => 'Cukup Baik', 'data' => [0, 0, 0, 3, 0, 0, 0]],
+                //             ['name' => 'Baik', 'data' => [1, 0, 0, 0, 0, 0, 0]],
+                //             ['name' => 'Sangat Baik', 'data' => [0, 2, 0, 0, 0, 0, 0]],
+                //         ]
+                //     ]
+                // ]);
                 ?>
         </div>
         <br>
@@ -210,6 +208,10 @@ use yii\grid\GridView;
 </style>
 
 <!-- /.row -->
+    <?php
+    $role = Yii::$app->user->identity->role;
+    if ($role == 3) {?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -222,14 +224,12 @@ use yii\grid\GridView;
                 <div class="table-responsive">
                     <table class="table no-margin">
 
-
-                        <?php
-                        $name = Yii::$app->user->identity->username;
-                        if ($name == "mansup") {
-
+<?php
+                    
                             echo GridView::widget([
                                 'dataProvider' => $dataProvider,
                                 'filterModel' => $searchModel,
+                                'summary' => '',
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
 
@@ -270,12 +270,25 @@ use yii\grid\GridView;
 
 
                         <?php
-                        $name = Yii::$app->user->identity->username;
-                        if ($name == "techsup") {
+                        $role = Yii::$app->user->identity->role;
+                        if ($role == 2) {?>
+                        <div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">My Tiket</h3>
 
-                            echo GridView::widget([
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+
+
+                            <?php echo GridView::widget([
                                 'dataProvider' => $dataProvider,
                                 'filterModel' => $searchModel,
+                                'summary'=>'',
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
 

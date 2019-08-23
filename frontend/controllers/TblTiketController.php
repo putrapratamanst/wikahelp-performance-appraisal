@@ -198,6 +198,7 @@ class TblTiketController extends Controller
         $subTiket = TblSubTiket::find()->joinWith(['subKriteria','kriteria'])->where(['id_tiket' => $id]);
         
         $statusSubTiket = $subTiket->all();
+        echo"<pre>";die(print_r($id));
         $buttonClose = true;
         foreach ($statusSubTiket as $value) {
             if($value['status_sub_tiket'] != Constant::STATUS_DONE)
@@ -401,8 +402,10 @@ class TblTiketController extends Controller
 
     public function actionAjukan($id_tiket)
     {
+        $approver = Yii::$app->getRequest()->getQueryParam('approver');
         $model = $this->findModel($id_tiket);
         $model->status_tiket = Constant::STATUS_SUBMIT;
+        $model->approver = $approver;
 
         $model->save();
 

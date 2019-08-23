@@ -20,8 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <?php
-    $name = Yii::$app->user->identity->username;
-    if ($name == "mansup" || $name == "admin") {
+    $role = Yii::$app->user->identity->role;
+    if ($role == 3 || $role == 1) {
 
 
         echo GridView::widget([
@@ -96,8 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php
-    $name = Yii::$app->user->identity->username;
-    if ($name == "techsup") {
+    $role = Yii::$app->user->identity->role;
+    if ($role == 2) {
 
         // echo GridView::widget([
         //     'dataProvider' => $dataProvider,

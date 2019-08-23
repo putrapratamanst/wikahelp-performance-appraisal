@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     );
 
                     $data_row = TblNilaiPengkajian::find()->where($id)->all();
-
                     foreach ($data_row as $row) {
                         $nilai_pengkajian += $row->nilai_pengkajian;
                     }

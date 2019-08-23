@@ -51,4 +51,16 @@ class TblSubTiket extends \yii\db\ActiveRecord
             'notif_man' => 'Notif Man',
         ];
     }
+
+    public function getSubKriteria()
+    {
+        return $this->hasOne(TblSubKriteria::className(), ['id_sub_kriteria' => 'id_sub_kriteria']);
+    }
+
+    public function getKriteria()
+    {
+        return $this->hasOne(TblKriteria::className(), ['id_kriteria' => 'id_kriteria']);
+    }
+
+
 }

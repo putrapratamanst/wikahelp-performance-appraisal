@@ -84,6 +84,46 @@ class TblTiketSearch extends TblTiket
         return $dataProvider;
     }
 
+    public function searchTechSup($params, $nama_alternatif = NULL)
+    {   
+        $name = Yii::$app->user->identity->username;
+        // if ($name == "mansup")
+        // {
+        //     $query = TblTiket::find()->where(['status_tiket' => Constant::STATUS_DONE]);
+        // } else {
+           
+        $query = TblTiket::find()->where(['approver' => $name]);
+            
+        // }
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'tgl_tiket' => $this->tgl_tiket,
+        ]);
+
+        $query->andFilterWhere(['like', 'id_tiket', $this->id_tiket])
+            ->andFilterWhere(['like', 'id_alternatif', $this->id_alternatif])
+            ->andFilterWhere(['like', 'wkt_tiket', $this->wkt_tiket])
+            ->andFilterWhere(['like', 'status_tiket', $this->status_tiket])
+            ->orderBy(['id_tiket' => SORT_DESC]);
+
+        return $dataProvider;
+    }
+
     public function searchSelesai($params, $nama_alternatif = NULL)
     {   
         // $name = Yii::$app->user->identity->username;

@@ -61,8 +61,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $role = Yii::$app->user->identity->role;
         $searchModel = new TblTiketSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        if ($role == 2)
+        {
+            $dataProvider = $searchModel->searchTechsup(Yii::$app->request->queryParams);
+            
+        } else {
+
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,

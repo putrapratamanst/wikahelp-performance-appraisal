@@ -18,6 +18,7 @@ use frontend\models\TblAlternatif;
 use frontend\models\TblKriteria;
 use backend\models\TblNilaiPengkajian;
 use yii\filters\AccessControl;
+use kartik\mpdf\Pdf;
 
 /**
  * TblTiketController implements the CRUD actions for TblTiket model.
@@ -402,4 +403,32 @@ class TblTiketController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionReport()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+        $dataTiket = TblTiket::find()->joinWith('alternatif')->all();
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+            'destination' => Pdf::DEST_BROWSER,
+            'content' => $this->renderPartial('laporan', [
+                'data' => $dataTiket
+            ]),
+            'options' => [
+                // any mpdf options you wish to set
+            ],
+            'methods' => [
+                'SetTitle' => 'Privacy Policy - Wika Help',
+                'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
+                'SetHeader' => ['Wika Help ||Generated On: ' . date("r")],
+                'SetFooter' => ['|Page {PAGENO}|'],
+                'SetAuthor' => 'Arya Niken Manalu',
+                'SetCreator' => 'Arya Niken Manalu',
+                'SetKeywords' => 'Wika Help',
+            ]
+        ]);
+        return $pdf->render();
+    }
+
 }

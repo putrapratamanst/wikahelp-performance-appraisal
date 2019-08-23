@@ -106,7 +106,6 @@ class TblNilaiMatrix extends \yii\db\ActiveRecord
     {
         $data = '0';
         $data_row = TblNilaiAlternatif::find()->where(['id_alternatif' => $id_alternatif])->andWhere(['id_kriteria' => $id_kriteria])->all();
-
         foreach ($data_row as $row) {
             $data += self::bobot_sub_kriteria($row->id_sub_kriteria);
         }

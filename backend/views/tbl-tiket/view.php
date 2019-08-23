@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php
-    $idTiket = Yii::$app->getRequest()->getQueryParam('id');
+        $idTiket = Yii::$app->getRequest()->getQueryParam('id');
 
-        echo Html::a('Kembali', ['index'], ['class' => 'btn btn-default']);
+        echo Html::a('Kembali', ['/'], ['class' => 'btn btn-default']);
         echo "\n\n";
 
 
@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
     echo "<h3> Data Masalah </h3>";
-    $name = Yii::$app->user->identity->username;
-    if($name == "mansup")
+    $role = Yii::$app->user->identity->role;
+    if($role == 3)
     {
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]);
     }
-    if($name == "techsup")
+    if($role == 2)
     {
         echo GridView::widget([
             'dataProvider' => $dataProvider,
