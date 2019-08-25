@@ -29,7 +29,7 @@ class TblNilaiAlternatif extends \yii\db\ActiveRecord
     {
         return [
             [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'required'],
-            [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria'], 'string', 'max' => 100],
+            [['id_nilai_alternatif', 'id_alternatif', 'id_kriteria', 'id_sub_kriteria', 'status', 'id_tiket'], 'string', 'max' => 100],
             [['id_nilai_alternatif'], 'unique'],
         ];
     }

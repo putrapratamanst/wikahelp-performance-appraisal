@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
 
                     $enteringFlowData = number_format((1 / (7 - 1)) * $nilai_pengkajian1, 3);
-
+                    
                     return $leavingFlowData - $enteringFlowData;
 
                 }

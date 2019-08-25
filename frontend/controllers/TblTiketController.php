@@ -349,7 +349,9 @@ class TblTiketController extends Controller
                         'id_nilai_alternatif'=>$nilaiAlternatif->reformattedId(),
                         'id_alternatif'=>$model->id_alternatif,
                         'id_kriteria'=>$findKriteria['id_kriteria'],
+                        'id_tiket'=> $model->id_tiket,
                         'id_sub_kriteria'=>$values,
+                        'status'=> 0,
                     );
                     $nilaiAlternatif->setAttributes($data);
                     $nilaiAlternatif->save();
@@ -408,6 +410,12 @@ class TblTiketController extends Controller
 
         $model->save();
 
+        $nilai = TblNilaiAlternatif::find()->where(['id_tiket' => $id_tiket])->all();
+        foreach ($nilai as $valueNilai) {
+            $valueNilai->status = 1;
+            $valueNilai->save();
+        }
+
         Yii::$app->session->setFlash('success', "Tiket telah diajukan.");
         return $this->redirect(Yii::$app->request->referrer);
     }
@@ -434,6 +442,14 @@ class TblTiketController extends Controller
 
         $model->save();
 
+        $nilai = TblNilaiAlternatif::find()->where(['id_tiket' => $id])->all();
+        foreach ($nilai as $valueNilai) {
+            $valueNilai->status = 1;
+            $valueNilai->save();
+        }
+
+
+
         return $this->redirect('index');
     }
 
@@ -443,6 +459,13 @@ class TblTiketController extends Controller
         $model->status_tiket = Constant::STATUS_PROCESS;
 
         $model->save();
+
+        $nilai = TblNilaiAlternatif::find()->where(['id_tiket' => $id])->all();
+        foreach ($nilai as $valueNilai) {
+            $valueNilai->status = 0;
+            $valueNilai->save();
+        }
+        Yii::$app->session->setFlash('success', "Tiket telah dibatalkan.");
 
         return $this->redirect('index');
     }

@@ -148,7 +148,6 @@ class TblTiketController extends Controller
                 }
             }
         }
-
         if (isset($data_alternatif)) {
             foreach ($data_alternatif as $row) {
                 if (isset($data_alternatif)) {
