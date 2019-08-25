@@ -68,15 +68,17 @@ class SiteController extends Controller
         if ($role == 2)
         {
             $dataProvider = $searchModel->searchTechsup(Yii::$app->request->queryParams);
+            $dataProvider1 = $searchModel->searchTechsupTersedia(Yii::$app->request->queryParams);
             
         } else {
-
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider1 = [];
         }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProvider1' => $dataProvider1,
         ]);
 
     }

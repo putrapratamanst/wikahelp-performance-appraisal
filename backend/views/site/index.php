@@ -224,8 +224,7 @@ use yii\grid\GridView;
                 <div class="table-responsive">
                     <table class="table no-margin">
 
-<?php
-                    
+                        <?php
                             echo GridView::widget([
                                 'dataProvider' => $dataProvider,
                                 'filterModel' => $searchModel,
@@ -273,84 +272,162 @@ use yii\grid\GridView;
                         $role = Yii::$app->user->identity->role;
                         if ($role == 2) {?>
                         <div class="row">
-    <div class="col-md-12">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title">My Tiket</h3>
+                                    <div class="col-md-6">
+                                        <div class="box box-danger">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Tiket Tersedia</h3>
 
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table no-margin">
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <div class="table-responsive">
+                                                    <table class="table no-margin">
+                                                            <?php echo GridView::widget([
+                                                                'dataProvider' => $dataProvider1,
+                                                                'filterModel' => $searchModel,
+                                                                'summary'=>'',
+                                                                'columns' => [
+                                                                    ['class' => 'yii\grid\SerialColumn'],
 
+                                                                    'id_tiket',
+                                                                    'id_alternatif',
+                                                                    // 'wkt_tiket',
+                                                                    'tgl_tiket',
+                                                                    [
+                                                                        'attribute' => 'status_tiket',
+                                                                        'value' => function ($model) {
+                                                                            if ($model->status_tiket == Constant::STATUS_SUBMIT) {
+                                                                                return "Diterima";
+                                                                            }
 
-                            <?php echo GridView::widget([
-                                'dataProvider' => $dataProvider,
-                                'filterModel' => $searchModel,
-                                'summary'=>'',
-                                'columns' => [
-                                    ['class' => 'yii\grid\SerialColumn'],
+                                                                            return $model->status_tiket;
+                                                                        },
+                                                                    ],
 
-                                    'id_tiket',
-                                    'id_alternatif',
-                                    'wkt_tiket',
-                                    'tgl_tiket',
-                                    [
-                                        'attribute' => 'status_tiket',
-                                        'value' => function ($model) {
-                                            if ($model->status_tiket == Constant::STATUS_PROCESS) {
-                                                return "Belum di Proses";
-                                            }
-
-                                            return $model->status_tiket;
-                                        },
-                                    ],
-
-                                    [
-                                        'class' => 'yii\grid\ActionColumn',
-                                        'buttons' => [
-                                            // 'batal' => function ($url, $model, $key) {
-                                            //     if ($model->status_tiket == Constant::STATUS_SUBMIT) {
-                                            //         return Html::a(
-                                            //             '<span class="glyphicon glyphicon-remove"></span>',
-                                            //             ['tbl-tiket/status-batal', 'id' => $model->id_tiket],
-                                            //             [
-                                            //                 'data' => [
-                                            //                     'confirm' => 'Apakah Anda yakin ingin membatalkan tiket ini?',
-                                            //                     'method' => 'post',
-                                            //                 ]
-                                            //             ]
-                                            //         );
-                                            //     }
-                                            // },
-                                            'view' => function ($url, $model, $key) {
-                                                if ($model->status_tiket !== Constant::STATUS_PROCESS) {
-                                                    return Html::a(
-                                                        '<span class="glyphicon glyphicon-eye-open"></span>',
-                                                        ['tbl-tiket/view', 'id' => $model->id_tiket]
-                                                    );
-                                                }
-                                            },
-                                        ],
-                                        'template' => '{view} {batal} {proses}'
+                                                                    [
+                                                                        'class' => 'yii\grid\ActionColumn',
+                                                                        'buttons' => [
+                                                                            // 'batal' => function ($url, $model, $key) {
+                                                                            //     if ($model->status_tiket == Constant::STATUS_SUBMIT) {
+                                                                            //         return Html::a(
+                                                                            //             '<span class="glyphicon glyphicon-remove"></span>',
+                                                                            //             ['tbl-tiket/status-batal', 'id' => $model->id_tiket],
+                                                                            //             [
+                                                                            //                 'data' => [
+                                                                            //                     'confirm' => 'Apakah Anda yakin ingin membatalkan tiket ini?',
+                                                                            //                     'method' => 'post',
+                                                                            //                 ]
+                                                                            //             ]
+                                                                            //         );
+                                                                            //     }
+                                                                            // },
+                                                                            'view' => function ($url, $model, $key) {
+                                                                                if ($model->status_tiket !== Constant::STATUS_PROCESS) {
+                                                                                    return Html::a(
+                                                                                        '<span class="glyphicon glyphicon-eye-open"></span>',
+                                                                                        ['tbl-tiket/view', 'id' => $model->id_tiket]
+                                                                                    );
+                                                                                }
+                                                                            },
+                                                                        ],
+                                                                        'template' => '{view} {batal} {proses}'
 
 
-                                    ],
-                                ],
-                            ]);
-                        } ?>
+                                                                    ],
+                                                                ],
+                                                            ]);
+                                                        ?>
 
 
 
-                </div>
-                </table>
-            </div>
-            <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <!-- /.box-footer -->
-    </div>
+                                                </table>
+                                                </div>
+                                            </div>
+                                            <!-- /.table-responsive -->
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <!-- /.box-footer -->
+                                        <div class="col-md-6">
+                                            <div class="box box-info">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">My Tiket</h3>
+    
+                                                </div>
+                                                <!-- /.box-header -->
+                                                <div class="box-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table no-margin">
+    
+    
+                                                                <?php echo GridView::widget([
+                                                                    'dataProvider' => $dataProvider,
+                                                                    'filterModel' => $searchModel,
+                                                                    'summary'=>'',
+                                                                    'columns' => [
+                                                                        ['class' => 'yii\grid\SerialColumn'],
+    
+                                                                        'id_tiket',
+                                                                        'id_alternatif',
+                                                                        // 'wkt_tiket',
+                                                                        'tgl_tiket',
+                                                                        [
+                                                                            'attribute' => 'status_tiket',
+                                                                            'value' => function ($model) {
+                                                                                if ($model->status_tiket == Constant::STATUS_PROCESS) {
+                                                                                    return "Belum di Proses";
+                                                                                }
+    
+                                                                                return $model->status_tiket;
+                                                                            },
+                                                                        ],
+    
+                                                                        [
+                                                                            'class' => 'yii\grid\ActionColumn',
+                                                                            'buttons' => [
+                                                                                // 'batal' => function ($url, $model, $key) {
+                                                                                //     if ($model->status_tiket == Constant::STATUS_SUBMIT) {
+                                                                                //         return Html::a(
+                                                                                //             '<span class="glyphicon glyphicon-remove"></span>',
+                                                                                //             ['tbl-tiket/status-batal', 'id' => $model->id_tiket],
+                                                                                //             [
+                                                                                //                 'data' => [
+                                                                                //                     'confirm' => 'Apakah Anda yakin ingin membatalkan tiket ini?',
+                                                                                //                     'method' => 'post',
+                                                                                //                 ]
+                                                                                //             ]
+                                                                                //         );
+                                                                                //     }
+                                                                                // },
+                                                                                'view' => function ($url, $model, $key) {
+                                                                                    if ($model->status_tiket !== Constant::STATUS_PROCESS) {
+                                                                                        return Html::a(
+                                                                                            '<span class="glyphicon glyphicon-eye-open"></span>',
+                                                                                            ['tbl-tiket/view', 'id' => $model->id_tiket]
+                                                                                        );
+                                                                                    }
+                                                                                },
+                                                                            ],
+                                                                            'template' => '{view} {batal} {proses}'
+    
+    
+                                                                        ],
+                                                                    ],
+                                                                ]);
+                                                            } ?>
+    
+    
+    
+                                                    </table>
+                                                    </div>
+                                                </div>
+                                                <!-- /.table-responsive -->
+                                            </div>
+                                            <!-- /.box-body -->
+                                            <!-- /.box-footer -->
+                                        </div>
+                                    </div>
+                        </div>
+                                    
     <!-- /.box -->
 </div>
 <!-- /.col -->

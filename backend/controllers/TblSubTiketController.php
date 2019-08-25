@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use backend\models\User;
 use backend\models\TblAlternatif;
 use backend\models\TblSubKriteria;
+use backend\models\TblTiket;
 use common\helpers\Constant;
 use yii\filters\AccessControl;
 
@@ -139,8 +140,11 @@ class TblSubTiketController extends Controller
     {
         $model = $this->findModel($id_sub_tiket);
         $model->status_sub_tiket = Constant::STATUS_DONE;
-        
         $model->save();
+
+        $tiket = TblTiket::find()->where(['id_tiket'=>$model->id_tiket])->one();
+        $tiket->approver = Yii::$app->user->identity->username;
+        $tiket->save();
 
         Yii::$app->session->setFlash('success', "Pengerjaan telah selesai.");
         return $this->redirect(Yii::$app->request->referrer);

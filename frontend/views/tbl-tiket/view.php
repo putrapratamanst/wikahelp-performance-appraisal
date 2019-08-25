@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
         if ($model->status_tiket == Constant::STATUS_PROCESS) {
-            // echo Html::a('Ajukan Tiket', ['ajukan', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-warning']);
+            echo Html::a('Ajukan Tiket', ['ajukan', 'id_tiket' => $model->id_tiket], ['class' => 'btn btn-warning']);
             $dataApprover = [];
             $approver = User::find()->where(['role' => 2])->all();
             foreach ($approver as $valueDataApprover) {
@@ -59,12 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'url' => ['ajukan', 'id_tiket' => $model->id_tiket, 'approver' => $valueDataApprover->username]
                 ];
             }
-            echo ButtonDropdown::widget([
-                'label' => 'Ajukan Tiket - Pilih Technical Suppport',
-                'dropdown' => [
-                    'items' => $dataApprover,
-                ],
-            ]);
+            // echo ButtonDropdown::widget([
+            //     'label' => 'Ajukan Tiket - Pilih Technical Suppport',
+            //     'dropdown' => [
+            //         'items' => $dataApprover,
+            //     ],
+            // ]);
 
         }
 
