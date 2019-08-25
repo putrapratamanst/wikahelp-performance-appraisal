@@ -16,6 +16,8 @@
                         <ul class="treeview-menu">
                             <li><a href="/tbl-tiket/promothee"><i class="fa fa-circle-o"></i> Promothee</a></li>
                             <li><a href="/tbl-user/index"><i class="fa fa-circle-o"></i> Kelola User</a></li>
+                                <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
+                            
 
                         </ul>
                     </li>
@@ -36,9 +38,11 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="/tbl-tiket/promothee"><i class="fa fa-circle-o"></i> Promothee</a></li>
-                                <li><a href="/tbl-kriteria/index"><i class="fa fa-circle-o"></i> Kelola Kriteria</a></li>
+                                <li><a href="/kuisioner/index"><i class="fa fa-circle-o"></i> Kelola Data Kriteria Penilaian</a></li>
+                                <li><a href="/tbl-alternatif/index"><i class="fa fa-circle-o"></i> Kelola User</a></li>
                                 <li><a href="/tbl-tiket/index"><i class="fa fa-circle-o"></i> Kelola Tiket</a></li>
+                                <li><a href="/tbl-tiket/report"><i class="fa fa-circle-o"></i> Cetak Laporan</a/></li>
+
                             </ul>
                         </li>
                         <?php } ?>

@@ -198,7 +198,6 @@ class TblTiketController extends Controller
         $subTiket = TblSubTiket::find()->joinWith(['subKriteria','kriteria'])->where(['id_tiket' => $id]);
         
         $statusSubTiket = $subTiket->all();
-        echo"<pre>";die(print_r($id));
         $buttonClose = true;
         foreach ($statusSubTiket as $value) {
             if($value['status_sub_tiket'] != Constant::STATUS_DONE)
