@@ -1,27 +1,15 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $name string */
-/* @var $message string */
-/* @var $exception Exception */
 
 use yii\helpers\Html;
 
-$this->title = $name;
+$this->title = 'Help';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-error">
-
+<div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
+    <p>Silahkan hubungi <a href="mailto: aryaniken07@gmail.com">aryaniken07@gmail.com </a> untuk informasi lebih lanjut</p>
 
 </div>

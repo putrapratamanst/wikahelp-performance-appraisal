@@ -48,6 +48,7 @@ AppAsset::register($this);
         ['label' => 'Beranda', 'url' => ['/site/index']],
         ['label' => 'Tambah Tiket', 'url' => ['/tbl-tiket/create']],
         ['label' => 'List Tickets', 'url' => ['/tbl-tiket/index']],
+        ['label' => 'Help ', 'url' => ['/site/about']],
     ];
 
         $menuItems[] = '<li>'
