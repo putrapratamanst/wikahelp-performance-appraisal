@@ -17,6 +17,7 @@ use common\helpers\Constant;
 use frontend\models\TblAlternatif;
 use frontend\models\TblKriteria;
 use backend\models\TblNilaiPengkajian;
+use frontend\models\ContactForm;
 use yii\filters\AccessControl;
 use kartik\mpdf\Pdf;
 
@@ -429,5 +430,24 @@ class TblTiketController extends Controller
         ]);
         return $pdf->render();
     }
+
+    public function actionContact()
+    {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+            } else {
+                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+            }
+
+            return $this->refresh();
+        } else {
+            return $this->render('error', [
+                'model' => $model,
+            ]);
+        }
+    }
+
 
 }
