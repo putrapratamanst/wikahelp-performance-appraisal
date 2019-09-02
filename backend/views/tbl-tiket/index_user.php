@@ -8,7 +8,7 @@ use common\helpers\Constant;
 /* @var $searchModel backend\models\TblTiketSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'List Tiket '. ucwords(Yii::$app->getRequest()->getQueryParam('nama_alternatif'));
+$this->title = 'List Tiket ' . ucwords(Yii::$app->getRequest()->getQueryParam('nama_alternatif'));
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tbl-tiket-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    <?php echo $this->render('_search', ['model' => $searchModel]);
     ?>
 
     <?php
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'summary'=>'',
+            'summary' => '',
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 

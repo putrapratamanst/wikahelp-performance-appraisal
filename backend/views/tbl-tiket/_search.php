@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -10,24 +11,36 @@ use yii\widgets\ActiveForm;
 
 <div class="tbl-tiket-search">
 
+
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['view-by-user'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1,
+            'autocomplete' => 'off'
+        ],
     ]); ?>
+    <div class="input-group date">
+        <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+        </div>
+        <input type="text" class="form-control pull-right" id="datepicker">
+    </div>
 
-    <?= $form->field($model, 'id_tiket') ?>
+    <?= $form->field($model, 'tgl_tiket')->widget(
+        DatePicker::className(),
+        [
+            'options' => ['placeholder' => 'Masukkan Tanggal Tiket'],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd'
 
-    <?= $form->field($model, 'id_alternatif') ?>
-
-    <?= $form->field($model, 'wkt_tiket') ?>
-
-    <?= $form->field($model, 'tgl_tiket') ?>
-
-    <?= $form->field($model, 'status_tiket') ?>
+            ]
+        ]
+    ); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
