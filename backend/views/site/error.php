@@ -1,15 +1,41 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \frontend\models\ContactForm */
 
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
 
-$this->title = 'Help';
+$this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-about">
+<div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Silahkan hubungi <a href="mailto: aryaniken07@gmail.com">aryaniken07@gmail.com </a> untuk informasi lebih lanjut</p>
+    <p>
+        Silahkan kirim kritik dan saran. Terima Kasih
+    </p>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+
+            <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+
+            <?= $form->field($model, 'email') ?>
+
+            <?= $form->field($model, 'subject') ?>
+
+            <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
 
 </div>

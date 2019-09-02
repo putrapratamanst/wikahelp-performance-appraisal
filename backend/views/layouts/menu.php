@@ -77,7 +77,7 @@
                             <?php
                             if (!Yii::$app->user->isGuest) { ?>
 
-                            <li><a href="/site/error"><i class="fa fa-circle-o"></i> Help</a></li>
+                            <li><a href="/site/contact"><i class="fa fa-circle-o"></i> Help</a></li>
                             <li><a href="/site/logout"><i class="fa fa-circle-o"></i> Logout</a></li>
                             <?php } ?>
 
