@@ -77,7 +77,7 @@
                             <?php
                             if (!Yii::$app->user->isGuest) { ?>
 
-                                <li><a href="/tbl-tiket/contact"><i class="fa fa-circle-o"></i> Help</a></li>
+                                <li><a href="/tbl-tiket/guide"><i class="fa fa-circle-o"></i> Help</a></li>
                                 <li><a href="/site/logout"><i class="fa fa-circle-o"></i> Logout</a></li>
                             <?php } ?>
 

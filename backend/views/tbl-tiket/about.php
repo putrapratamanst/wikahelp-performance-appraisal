@@ -11,6 +11,6 @@ $this->title = 'Help';
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <!-- <p>Silahkan hubungi <a href="mailto: aryaniken07@gmail.com">aryaniken07@gmail.com </a> untuk informasi lebih lanjut</p> -->
-    <?= Html::img('@web/uploads/guide.png', ['alt' => 'My logo', 'width'=>1200]) ?>
+    <?= Html::img('@web/uploads/guide.png', ['alt' => 'My logo', 'width'=>1070]) ?>
 
 </div>

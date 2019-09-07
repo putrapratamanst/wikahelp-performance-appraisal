@@ -449,5 +449,10 @@ class TblTiketController extends Controller
         }
     }
 
+    public function actionGuide()
+    {
+        return $this->render('about');
+    }
+
 
 }
